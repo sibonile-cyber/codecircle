@@ -4,49 +4,46 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CodeCircle</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CodeCircle.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">CodeCircle</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+    <div class="app-container">
+
+        <!-- Left Column: The Dashboard Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                🚀 CodeCircle
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+            <ul class="sidebar-menu">
+                <!-- Our Active Tab -->
+                <a href="/" class="menu-item active">
+                    🏠 Home
+                </a>
+                <a href="/CreateProject" class="menu-item">
+                    📁 My Projects
+                </a>
+                <a href="/CelebrationWall" class="menu-item">
+                    🏆 Celebration Wall
+                </a>
+                <a href="/" class="menu-item">
+                    👤 Profile
+                </a>
+            </ul>
+            <div style="margin-top: auto;">
+                <!-- We keep our ASP.NET Login tools at the bottom of the sidebar -->
+                <partial name="_LoginPartial" />
+            </div>
+        </aside>
+        <!-- Right Column: Where all our Feed and Pages load -->
+        <main class="main-wrapper">
             @RenderBody()
         </main>
+
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CodeCircle - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
-
+    <!-- Required for ASP.NET functionality -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

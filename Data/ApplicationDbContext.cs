@@ -9,5 +9,6 @@ namespace CodeCircle.Data
             : base(options)
         {
         }
+        public DbSet<CodeCircle.Models.Project> Projects { get; set; }
     }
 }

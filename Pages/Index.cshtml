@@ -4,7 +4,79 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="dashboard-grid">
+
+    <!-- Central Feed Area -->
+    <div class="feed-column">
+        <div class="feed-header">
+            <h1>Developer Activity Feed</h1>
+            <a href="/CreateProject" class="btn-primary">Create Project</a>
+        </div>
+
+        <!-- We will put our SQL loop here soon to show real projects! -->
+        <div class="glass-card">
+            <!-- C# loop creating a card for every project in the database! -->
+            @foreach (var project in Model.Projects)
+            {
+                <div class="glass-card">
+
+                    <!-- Card Header (Avatar, Name, Stage Badge) -->
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-green); color: #111815; display: flex; justify-content: center; align-items: center; font-weight: bold;">
+                            👨‍💻
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <span style="font-weight: bold; color: white;">A Developer</span>
+                            <span style="background: rgba(103, 214, 113, 0.2); color: var(--accent-green); padding: 4px 10px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold;">
+                                @project.Stage
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 10px;">@project.Title</h2>
+                    <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">@project.Description</p>
+
+                    @if (!string.IsNullOrEmpty(project.SupportRequired))
+                    {
+                        <p style="color: var(--text-main); font-size: 14px; margin-bottom: 30px;">
+                            <strong style="color: var(--accent-green);">Support Needed:</strong> @project.SupportRequired
+                        </p>
+                    }
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 15px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <button style="background: rgba(255,255,255,0.05); color: white; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">💬 Comment</button>
+                        <button style="background: rgba(255,255,255,0.05); color: white; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">✋ Raise Hand</button>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <!-- Right Side Widgets Area -->
+    <div class="widget-column">
+
+        <div class="glass-card">
+            <h3 style="font-size: 16px; margin-bottom: 15px;">Trending Projects <span style="float:right; color: var(--text-muted);">...</span></h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Coming soon</p>
+        </div>
+
+        <div class="glass-card">
+            <h3 style="font-size: 16px; margin-bottom: 15px;">Active Developers <span style="float:right; color: var(--text-muted);">...</span></h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Coming soon</p>
+        </div>
+
+        <div class="glass-card">
+            <h3 style="font-size: 16px; margin-bottom: 15px;">Quick Stats <span style="float:right; color: var(--text-muted);">...</span></h3>
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">Projects: <strong>0</strong></p>
+                <p style="color: var(--text-muted); font-size: 14px; margin:0;">Completed: <strong>0</strong></p>
+            </div>
+        </div>
+
+    </div>
+
 </div>

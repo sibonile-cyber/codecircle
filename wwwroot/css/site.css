@@ -1,22 +1,125 @@
-html {
-  font-size: 14px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    
+    --bg-app: #181d1a; /* Deep background */
+    --bg-sidebar: #1d2522; /* Slightly lighter for the sidebar */
+    --bg-card: #202a27; /* Cards in the feed */
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent-green: #67d671; /* The bright green for active states */
+    --accent-dark-green: #3ca846; /* Button hover states */
+    --border-color: #2b3834;
+    --border-radius: 12px;
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.app-container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+}
+
+
+.sidebar {
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px 30px 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--text-muted);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+    .menu-item:hover {
+        color: white;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .menu-item.active {
+        background: linear-gradient(90deg, #5bb463, #7bed86);
+        color: #111815; 
+        font-weight: 600;
+        border-radius: 0 20px 20px 0;
+        margin-right: 15px; 
+    }
+
+
+.main-wrapper {
+    padding: 40px;
+}
+/* --- Index Layout (Feed vs Widgets) --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px; /* Left feed takes remaining space, right widgets are 340px wide */
+    gap: 30px;
+}
+
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+    .feed-header h1 {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+.btn-primary {
+    background: var(--accent-green);
+    color: #111815;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+    .btn-primary:hover {
+        background: var(--accent-dark-green);
+        color: white;
+    }
+
+.glass-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 20px;
 }

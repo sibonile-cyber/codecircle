@@ -1,0 +1,44 @@
+﻿@page
+@model CodeCircle.Pages.CreateProjectModel
+@{
+    ViewData["Title"] = "Start a Project";
+}
+
+<div style="max-width: 600px; margin: 40px auto;">
+    <h1 style="color: var(--accent-primary); margin-bottom: 20px;">Build in Public</h1>
+    <p style="color: var(--text-muted); margin-bottom: 30px;">Share what you're working on with the CodeCircle community.</p>
+
+    <!-- The form sends data to our OnPost() method in C#! -->
+    <form method="post" class="glass-card">
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Project Title</label>
+            <input type="text" asp-for="NewProject.Title" required style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(0,0,0,0.2); color: white;" placeholder="e.g., An AI-powered ToDo App" />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Description</label>
+            <textarea asp-for="NewProject.Description" rows="4" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(0,0,0,0.2); color: white;" placeholder="What does it do?"></textarea>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Current Stage</label>
+            <select asp-for="NewProject.Stage" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white;">
+                <option value="Just an Idea">Just an Idea</option>
+                <option value="Actively Building">Actively Building</option>
+                <option value="Beta Testing">Beta Testing</option>
+                <option value="Completed">Completed 🎉</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Support Required</label>
+            <input type="text" asp-for="NewProject.SupportRequired" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(0,0,0,0.2); color: white;" placeholder="e.g., Need a frontend designer" />
+        </div>
+
+        <button type="submit" style="background: var(--accent-primary); color: #0f172a; font-weight: bold; width: 100%; padding: 14px; border-radius: 8px; font-size: 16px; transition: 0.3s; cursor: pointer;">
+            Launch Project
+        </button>
+
+    </form>
+</div>

@@ -1,0 +1,34 @@
+﻿@page
+@model CodeCircle.Pages.CelebrationWallModel
+@{
+    ViewData["Title"] = "Celebration Wall";
+}
+
+<div style="text-align: center; margin-bottom: 40px;">
+    <h1 style="color: var(--accent-green); font-size: 36px; margin-bottom: 10px;">🎉 The Celebration Wall</h1>
+    <p style="color: var(--text-muted); font-size: 18px;">Honoring the developers who built in public and crossed the finish line.</p>
+</div>
+
+<!-- A 2-column grid for our completed projects -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+
+    @foreach (var project in Model.CompletedProjects)
+    {
+        <!-- Notice the special green glow box-shadow for completed projects! -->
+        <div class="glass-card" style="box-shadow: 0 0 15px rgba(103, 214, 113, 0.15); border-color: var(--accent-green);">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--accent-green); color: #111815; display: flex; justify-content: center; align-items: center; font-size: 20px;">
+                    🏆
+                </div>
+                <div>
+                    <h2 style="font-size: 22px; font-weight: bold; margin: 0;">@project.Title</h2>
+                    <span style="color: var(--accent-green); font-weight: 600; font-size: 14px;">Completed Successfully!</span>
+                </div>
+            </div>
+
+            <p style="color: var(--text-muted); line-height: 1.6;">@project.Description</p>
+        </div>
+    }
+
+</div>
+
