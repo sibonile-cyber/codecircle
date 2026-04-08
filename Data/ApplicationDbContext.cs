@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CodeCircle.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeCircle.Data
@@ -10,5 +11,7 @@ namespace CodeCircle.Data
         {
         }
         public DbSet<CodeCircle.Models.Project> Projects { get; set; }
+        public DbSet<Celebration> Celebrations { get; set; }
+
     }
 }

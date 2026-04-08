@@ -13,14 +13,13 @@
             <a href="/CreateProject" class="btn-primary">Create Project</a>
         </div>
 
-        <!-- We will put our SQL loop here soon to show real projects! -->
+       
         <div class="glass-card">
-            <!-- C# loop creating a card for every project in the database! -->
+            
             @foreach (var project in Model.Projects)
             {
                 <div class="glass-card">
 
-                    <!-- Card Header (Avatar, Name, Stage Badge) -->
                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
                         <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-green); color: #111815; display: flex; justify-content: center; align-items: center; font-weight: bold;">
                             👨‍💻
@@ -75,6 +74,51 @@
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">Projects: <strong>0</strong></p>
                 <p style="color: var(--text-muted); font-size: 14px; margin:0;">Completed: <strong>0</strong></p>
             </div>
+            <div class="celebration-feed">
+                @if (Model.Celebrations != null && Model.Celebrations.Any())
+                {
+                    foreach (var win in Model.Celebrations)
+                    {
+                        <div class="celebration-item flex-row">
+                            <div class="avatar bg-primary">@win.DeveloperInitials</div>
+
+                            <div class="celebration-content">
+                                <strong>@win.DeveloperName</strong>
+                                <span class="action-text">@win.ActionText</span>
+                                <p class="project-title">@win.ProjectTitle</p>
+
+                                <!-- Display the image if one was uploaded! -->
+                                @if (!string.IsNullOrEmpty(win.ImagePath))
+                                {
+                                    <img src="@win.ImagePath" alt="Win Image" style="max-width: 100%; border-radius: 8px; margin-top: 8px;" />
+                                }
+
+                                <!-- Formats date to look like "Oct 12" -->
+                                <small class="time-ago">@win.CreatedAt.ToString("MMM dd")</small>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p style="color: #8B949E; text-align: center; margin-top: 20px;">No wins yet. Be the first to post!</p>
+                }
+            </div>
+
+
+                    <!-- Celebration Item 2 -->
+                    <div class="celebration-item flex-row">
+                        <div class="avatar bg-primary">MJ</div>
+                        <div class="celebration-content">
+                            <strong>Mark J.</strong>
+                            <span class="action-text">squashed a bug</span>
+                            <p class="project-title">Resolved DB Timeout Issue</p>
+                            <small class="time-ago">5 hours ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>

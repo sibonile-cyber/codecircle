@@ -123,3 +123,87 @@ body {
     padding: 20px;
     margin-bottom: 20px;
 }
+/* Celebration Wall Widget */
+.celebration-wall {
+    background-color: #1A1E23; 
+    border: 1px solid #2D333B;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.celebration-header h3 {
+    font-size: 1.2rem;
+    color: #E2E8F0;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.celebration-header p {
+    color: #8B949E;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.celebration-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #2D333B;
+}
+
+    .celebration-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    margin-right: 14px;
+    flex-shrink: 0;
+}
+
+.bg-success {
+    background-color: #238636 !important;
+}
+
+.bg-primary {
+    background-color: #58A6FF !important;
+}
+
+.celebration-content {
+    display: flex;
+    flex-direction: column;
+}
+
+    .celebration-content strong {
+        color: #C9D1D9;
+        font-size: 0.95rem;
+    }
+
+.action-text {
+    color: #8B949E;
+    font-size: 0.85rem;
+    margin-top: -2px;
+}
+
+.project-title {
+    color: #E2E8F0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 4px 0 2px 0;
+}
+
+.time-ago {
+    color: #8B949E;
+    font-size: 0.75rem;
+}

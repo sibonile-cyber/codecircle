@@ -9,19 +9,32 @@ namespace CodeCircle.Pages
     {
         private readonly ApplicationDbContext _db;
 
-        // Injecting the database translator
+
         public IndexModel(ApplicationDbContext db)
         {
             _db = db;
         }
 
-        // The list that will hold all our retrieved projects
+
         public IList<Project> Projects { get; set; } = new List<Project>();
+
+        public IList<Celebration> Celebrations { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            // Fetch everything from SQL, newest on top!
+            // Fetch your existing Projects
             Projects = await _db.Projects.OrderByDescending(p => p.CreatedAt).ToListAsync();
+
+            // Fetch the 5 most recent Celebrations using _db instead of _context
+            if (_db.Celebrations != null)
+            {
+                Celebrations = await _db.Celebrations
+                     .OrderByDescending(c => c.CreatedAt)
+                     .Take(5)
+                     .ToListAsync();
+            }
         }
+
     }
+
 }
