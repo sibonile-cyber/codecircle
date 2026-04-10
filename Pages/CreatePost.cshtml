@@ -1,0 +1,59 @@
+﻿@page
+@model CodeCircle.Pages.CreatePostModel
+@{
+    ViewData["Title"] = "Post a Win";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card" style="background-color: #1A1E23; border: 1px solid #2D333B; border-radius: 12px; padding: 30px;">
+            <h2 class="text-light mb-4 text-center">🎉 Post a New Win</h2>
+
+            <form method="post" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label asp-for="NewCelebration.ProjectTitle" class="form-label text-light">Project Title</label>
+                    <input asp-for="NewCelebration.ProjectTitle" class="form-control" style="background-color: #0D1117; color: white; border: 1px solid #30363D;" placeholder="e.g., CodeCircle v1.0" required />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NewCelebration.ActionText" class="form-label text-light">What did you do?</label>
+                    <input asp-for="NewCelebration.ActionText" class="form-control" style="background-color: #0D1117; color: white; border: 1px solid #30363D;" placeholder="e.g., shipped a feature, fixed a bug..." required />
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <label asp-for="NewCelebration.DeveloperName" class="form-label text-light">Your Name</label>
+                        <input asp-for="NewCelebration.DeveloperName" class="form-control" style="background-color: #0D1117; color: white; border: 1px solid #30363D;" placeholder="Sarah Dev" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="NewCelebration.DeveloperInitials" class="form-label text-light">Initials</label>
+                        <input asp-for="NewCelebration.DeveloperInitials" maxlength="2" class="form-control" style="background-color: #0D1117; color: white; border: 1px solid #30363D;" placeholder="SD" required />
+                    </div>
+                </div>
+
+                
+                <div class="mb-4">
+                    <label class="form-label text-light">Upload a Screenshot (Optional)</label>
+                    <div class="file-upload-wrapper">
+                       
+                        <input type="file" asp-for="UploadedImage" class="file-upload-input" accept="image/*" />
+                        <div class="file-upload-design">
+                           
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px;">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p>Click here to browse files</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <button type="submit" class="btn post-submit-btn w-100">Post to Celebration Wall</button>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+name: .NET Core CI/CD Pipeline
+
+# This triggers the pipeline whenever you push to main or make a pull request
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build_and_test:
+    name: Build & Test CodeCircle
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Grabs the latest code from your repository
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 2. Sets up the .NET development environment
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # Change to 7.0.x or 6.0.x if your project uses an older version of .NET
+
+    # 3. Restores your NuGet packages 
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # 4. Compiles the CodeCircle app exactly as it would for Production
+    - name: Build CodeCircle
+      run: dotnet build --configuration Release --no-restore
+
+    # 5. Automatically runs any unit tests (Optional, but highly recommended for CI/CD)
+    - name: Run Tests
+      run: dotnet test --no-build --verbosity normal --configuration Release

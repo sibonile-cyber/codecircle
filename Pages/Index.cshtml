@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -6,7 +6,7 @@
 
 <div class="dashboard-grid">
 
-    <!-- Central Feed Area -->
+    
     <div class="feed-column">
         <div class="feed-header">
             <h1>Developer Activity Feed</h1>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <!-- Main Content -->
+                    
                     <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 10px;">@project.Title</h2>
                     <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">@project.Description</p>
 
@@ -43,7 +43,7 @@
                         </p>
                     }
 
-                    <!-- Action Buttons -->
+                    
                     <div style="display: flex; gap: 15px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
                         <button style="background: rgba(255,255,255,0.05); color: white; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">💬 Comment</button>
                         <button style="background: rgba(255,255,255,0.05); color: white; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">✋ Raise Hand</button>
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <!-- Right Side Widgets Area -->
+   
     <div class="widget-column">
 
         <div class="glass-card">
@@ -83,17 +83,17 @@
                             <div class="avatar bg-primary">@win.DeveloperInitials</div>
 
                             <div class="celebration-content">
-                                <strong>@win.DeveloperName</strong>
+                                <a asp-page="/Profile" asp-route-username="@win.DeveloperName" style="color: inherit; text-decoration: none;"><strong>@win.DeveloperName</strong></a>
                                 <span class="action-text">@win.ActionText</span>
                                 <p class="project-title">@win.ProjectTitle</p>
 
-                                <!-- Display the image if one was uploaded! -->
+                              
                                 @if (!string.IsNullOrEmpty(win.ImagePath))
                                 {
                                     <img src="@win.ImagePath" alt="Win Image" style="max-width: 100%; border-radius: 8px; margin-top: 8px;" />
                                 }
 
-                                <!-- Formats date to look like "Oct 12" -->
+                                
                                 <small class="time-ago">@win.CreatedAt.ToString("MMM dd")</small>
                             </div>
                         </div>
@@ -106,11 +106,10 @@
             </div>
 
 
-                    <!-- Celebration Item 2 -->
                     <div class="celebration-item flex-row">
                         <div class="avatar bg-primary">MJ</div>
                         <div class="celebration-content">
-                            <strong>Mark J.</strong>
+                            <a asp-page="/Profile" asp-route-username="Mark J." style="color: inherit; text-decoration: none;"><strong>Mark J.</strong></a>
                             <span class="action-text">squashed a bug</span>
                             <p class="project-title">Resolved DB Timeout Issue</p>
                             <small class="time-ago">5 hours ago</small>

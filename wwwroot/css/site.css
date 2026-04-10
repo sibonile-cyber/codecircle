@@ -2,13 +2,13 @@
 
 :root {
     
-    --bg-app: #181d1a; /* Deep background */
-    --bg-sidebar: #1d2522; /* Slightly lighter for the sidebar */
-    --bg-card: #202a27; /* Cards in the feed */
+    --bg-app: #181d1a; 
+    --bg-sidebar: #1d2522; 
+    --bg-card: #202a27; 
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
-    --accent-green: #67d671; /* The bright green for active states */
-    --accent-dark-green: #3ca846; /* Button hover states */
+    --accent-green: #67d671; 
+    --accent-dark-green: #3ca846; 
     --border-color: #2b3834;
     --border-radius: 12px;
 }
@@ -82,10 +82,10 @@ body {
 .main-wrapper {
     padding: 40px;
 }
-/* --- Index Layout (Feed vs Widgets) --- */
+
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 1fr 340px; /* Left feed takes remaining space, right widgets are 340px wide */
+    grid-template-columns: 1fr 340px; 
     gap: 30px;
 }
 
@@ -207,3 +207,79 @@ body {
     color: #8B949E;
     font-size: 0.75rem;
 }
+
+.post-submit-btn {
+    background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+    color: white;
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(35, 134, 54, 0.2);
+}
+
+    .post-submit-btn:hover {
+        background: linear-gradient(135deg, #2ea043 0%, #3fb950 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
+        color: white;
+    }
+
+
+.form-control {
+    background-color: #0D1117 !important;
+    color: #E2E8F0 !important;
+    border: 1px solid #30363D !important;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: #58A6FF !important;
+        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2) !important;
+    }
+
+
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    border: 2px dashed #30363D;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0D1117;
+    transition: all 0.3s ease;
+}
+
+    .file-upload-wrapper:hover {
+        border-color: #58A6FF;
+        background-color: #161b22;
+    }
+
+.file-upload-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload-design {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #8B949E;
+}
+
+    .file-upload-design p {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }

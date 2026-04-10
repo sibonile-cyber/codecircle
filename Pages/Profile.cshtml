@@ -1,0 +1,57 @@
+﻿@page "{username?}"
+@model CodeCircle.Pages.ProfileModel
+@{
+    ViewData["Title"] = Model.CurrentDeveloper + "'s Profile";
+}
+
+<
+    <div class="col-12 mb-5">
+        <div class="card p-5 text-center" style="background-color: #1A1E23; border: 1px solid #30363D; border-radius: 12px; border-bottom: 4px solid #58A6FF;">
+           
+            @if (Model.DeveloperWins.Any())
+            {
+                <div class="d-inline-flex justify-content-center align-items-center mb-3" style="width: 90px; height: 90px; border-radius: 50%; background-color: #58A6FF; color: white; font-size: 2.2rem; font-weight: bold; margin: 0 auto;">
+                    @Model.DeveloperWins.First().DeveloperInitials
+                </div>
+            }
+            <h1 class="text-light" style="font-weight: 700; font-size: 2.5rem;">@Model.CurrentDeveloper</h1>
+            <p style="color: #8B949E; font-size: 1.1rem;">Public Portofolio • @Model.DeveloperWins.Count Wins</p>
+        </div>
+    </div>
+
+   
+    <div class="col-12">
+        <h3 class="text-light mb-4">🏆 @Model.CurrentDeveloper's Wall</h3>
+
+        <div class="row">
+            @if (Model.DeveloperWins.Any())
+            {
+                foreach (var win in Model.DeveloperWins)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100" style="background-color: #0D1117; border: 1px solid #30363D; border-radius: 12px; padding: 20px;">
+                            <h5 class="text-light mb-2">@win.ProjectTitle</h5>
+                            <span style="color: #238636; font-weight: 600; font-size: 0.9rem; margin-bottom: 15px; display: block;">@win.ActionText</span>
+
+                            @if (!string.IsNullOrEmpty(win.ImagePath))
+                            {
+                                <img src="@win.ImagePath" class="img-fluid rounded mb-3" style="border: 1px solid #30363D; max-height: 180px; width: 100%; object-fit: cover;" />
+                            }
+
+                            <div style="margin-top: auto;">
+                                <small style="color: #8B949E;">@win.CreatedAt.ToString("MMM dd, yyyy")</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center text-light">
+                    <p style="color: #8B949E;">This developer hasn't posted anything yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</>
+

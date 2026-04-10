@@ -1,34 +1,54 @@
-﻿@page
+@page
 @model CodeCircle.Pages.CelebrationWallModel
 @{
     ViewData["Title"] = "Celebration Wall";
 }
 
-<div style="text-align: center; margin-bottom: 40px;">
-    <h1 style="color: var(--accent-green); font-size: 36px; margin-bottom: 10px;">🎉 The Celebration Wall</h1>
-    <p style="color: var(--text-muted); font-size: 18px;">Honoring the developers who built in public and crossed the finish line.</p>
-</div>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-light m-0">🏆 The Celebration Wall</h1>
+        <a href="/CreatePost" class="btn" style="background-color: #238636; color: white;">Post a Win</a>
+    </div>
 
-<!-- A 2-column grid for our completed projects -->
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+    <div class="row">
+        @if (Model.Celebrations != null && Model.Celebrations.Any())
+        {
+            foreach (var win in Model.Celebrations)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card" style="background-color: #1A1E23; border: 1px solid #30363D; border-radius: 12px; padding: 20px; height: 100%;">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="avatar bg-primary me-3" style="width: 45px; height: 45px; flex-shrink: 0; font-size: 1.1rem; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: white; font-weight: bold;">
+                                @win.DeveloperInitials
+                            </div>
+                            <div>
+                                <h5 class="text-light mb-1" style="font-weight: 600;"><a asp-page="/Profile" asp-route-username="@win.DeveloperName" style="color: inherit; text-decoration: none;">@win.DeveloperName</a> <span style="font-size: 0.85rem; color: #8B949E; font-weight: normal;">@win.ActionText</span></h5>
+                                <strong style="color: #58A6FF;">@win.ProjectTitle</strong>
+                            </div>
+                        </div>
 
-    @foreach (var project in Model.CompletedProjects)
-    {
-        <!-- Notice the special green glow box-shadow for completed projects! -->
-        <div class="glass-card" style="box-shadow: 0 0 15px rgba(103, 214, 113, 0.15); border-color: var(--accent-green);">
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--accent-green); color: #111815; display: flex; justify-content: center; align-items: center; font-size: 20px;">
-                    🏆
+                     
+                        @if (!string.IsNullOrEmpty(win.ImagePath))
+                        {
+                            <img src="@win.ImagePath" class="img-fluid rounded mt-2 mb-3" style="width: 100%; max-height: 200px; object-fit: cover; border: 1px solid #30363D;" alt="Screenshot" />
+                        }
+
+                        <div style="margin-top: auto;">
+                          
+                            <small style="color: #8B949E;">@win.CreatedAt.ToString("MMMM dd, yyyy - hh:mm tt")</small>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h2 style="font-size: 22px; font-weight: bold; margin: 0;">@project.Title</h2>
-                    <span style="color: var(--accent-green); font-weight: 600; font-size: 14px;">Completed Successfully!</span>
-                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center text-light mt-5">
+                <h3 style="color: #8B949E;">No wins posted yet.</h3>
+                <p>Be the first developer to post your milestone!</p>
             </div>
-
-            <p style="color: var(--text-muted); line-height: 1.6;">@project.Description</p>
-        </div>
-    }
-
+        }
+    </div>
 </div>
+
 

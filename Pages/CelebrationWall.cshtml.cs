@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CodeCircle.Data;
 using CodeCircle.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CodeCircle.Pages
 {
@@ -14,15 +17,16 @@ namespace CodeCircle.Pages
             _db = db;
         }
 
-        public IList<Project> CompletedProjects { get; set; } = new List<Project>();
+        public IList<Celebration> Celebrations { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            // Only fetch projects that have reached the finish line!
-            CompletedProjects = await _db.Projects
-                                         .Where(p => p.Stage == "Completed")
-                                         .OrderByDescending(p => p.CreatedAt)
-                                         .ToListAsync();
+            if (_db.Celebrations != null)
+            {
+                Celebrations = await _db.Celebrations
+                    .OrderByDescending(c => c.CreatedAt)
+                    .ToListAsync();
+            }
         }
     }
 }
