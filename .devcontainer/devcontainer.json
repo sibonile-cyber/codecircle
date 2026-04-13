@@ -1,0 +1,20 @@
+{
+  "name": "CodeCircle (.NET 7 + SQL Server)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp"
+      ]
+    }
+  },
+  "postCreateCommand": "bash -lc 'cd /workspace && dotnet restore && (dotnet tool install --global dotnet-ef --version 7.0.20 2>/dev/null || true) && dotnet ef database update'",
+  "forwardPorts": [5000, 5001, 8080, 1433],
+  "portsAttributes": {
+    "5001": { "label": "HTTPS", "protocol": "https" },
+    "5000": { "label": "HTTP" },
+    "1433": { "label": "SQL Server (dev)" }
+  }
+}

@@ -6,6 +6,7 @@ using CodeCircle.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace CodeCircle.Pages
 {
@@ -51,11 +52,22 @@ namespace CodeCircle.Pages
         public async Task<IActionResult> OnPostRequestCollabAsync(string receiverUserName)
         {
             var senderUser = (User.Identity?.IsAuthenticated == true ? User.Identity?.Name : null) ?? "Alex Kim";
+            receiverUserName = (receiverUserName ?? string.Empty).Trim();
+
+            if (string.IsNullOrWhiteSpace(receiverUserName) || receiverUserName.Length > 64)
+            {
+                return BadRequest();
+            }
+
+            if (string.Equals(receiverUserName, senderUser, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest();
+            }
 
             var req = new CollabRequest
             {
                 SenderUserName = senderUser,
-                ReceiverUserName = string.IsNullOrEmpty(receiverUserName) ? "TargetUser" : receiverUserName,
+                ReceiverUserName = receiverUserName,
                 ProjectName = "DevFlow",
                 ProjectDescription = "AI code review tool",
                 RoleRequested = "Backend dev",

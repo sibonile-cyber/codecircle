@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
 using CodeCircle.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CodeCircle.Pages
 {
@@ -18,18 +19,39 @@ namespace CodeCircle.Pages
         }
 
         // [BindProperty] automatically attaches the HTML form inputs by matching their 'name=' tags!
-        [BindProperty] public string ProjectName { get; set; } = string.Empty;
-        [BindProperty] public string Description { get; set; } = string.Empty;
-        [BindProperty] public string CurrentStage { get; set; } = string.Empty;
-        [BindProperty] public string SupportNeeded { get; set; } = string.Empty;
-        [BindProperty] public string MilestoneUpdate { get; set; } = string.Empty;
-        [BindProperty] public int Progress { get; set; }
+        [BindProperty, Required, StringLength(80)]
+        public string ProjectName { get; set; } = string.Empty;
+
+        [BindProperty, Required, StringLength(2000)]
+        public string Description { get; set; } = string.Empty;
+
+        [BindProperty, Required, StringLength(24)]
+        public string CurrentStage { get; set; } = "Ideating";
+
+        [BindProperty, StringLength(120)]
+        public string SupportNeeded { get; set; } = string.Empty;
+
+        [BindProperty, StringLength(200)]
+        public string MilestoneUpdate { get; set; } = string.Empty;
+
+        [BindProperty, Range(0, 100)]
+        public int Progress { get; set; }
 
         public void OnGet() { }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
+            ProjectName = (ProjectName ?? string.Empty).Trim();
+            Description = (Description ?? string.Empty).Trim();
+            CurrentStage = string.IsNullOrWhiteSpace(CurrentStage) ? "Ideating" : CurrentStage.Trim();
+            SupportNeeded = (SupportNeeded ?? string.Empty).Trim();
+            MilestoneUpdate = (MilestoneUpdate ?? string.Empty).Trim();
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             var newProject = new Project
             {
                 Title = ProjectName,

@@ -41,10 +41,15 @@ namespace CodeCircle.Pages
         public async Task<IActionResult> OnPostAcceptAsync(int requestId)
         {
             var req = await _context.CollabRequests.FindAsync(requestId);
-            if (req != null)
+            var currentUser = (User.Identity?.IsAuthenticated == true ? User.Identity?.Name : null) ?? "Alex Kim";
+            if (req != null && req.ReceiverUserName == currentUser)
             {
                 req.Status = "Accepted";
                 await _context.SaveChangesAsync();
+            }
+            else if (req != null)
+            {
+                return Forbid();
             }
             return RedirectToPage();
         }
@@ -52,10 +57,15 @@ namespace CodeCircle.Pages
         public async Task<IActionResult> OnPostDeclineAsync(int requestId)
         {
             var req = await _context.CollabRequests.FindAsync(requestId);
-            if (req != null)
+            var currentUser = (User.Identity?.IsAuthenticated == true ? User.Identity?.Name : null) ?? "Alex Kim";
+            if (req != null && req.ReceiverUserName == currentUser)
             {
                 req.Status = "Declined";
                 await _context.SaveChangesAsync();
+            }
+            else if (req != null)
+            {
+                return Forbid();
             }
             return RedirectToPage();
         }
@@ -63,10 +73,15 @@ namespace CodeCircle.Pages
         public async Task<IActionResult> OnPostWithdrawAsync(int requestId)
         {
             var req = await _context.CollabRequests.FindAsync(requestId);
-            if (req != null)
+            var currentUser = (User.Identity?.IsAuthenticated == true ? User.Identity?.Name : null) ?? "Alex Kim";
+            if (req != null && req.SenderUserName == currentUser)
             {
                 _context.CollabRequests.Remove(req);
                 await _context.SaveChangesAsync();
+            }
+            else if (req != null)
+            {
+                return Forbid();
             }
             return RedirectToPage();
         }
