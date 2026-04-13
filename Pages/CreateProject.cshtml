@@ -1,4 +1,5 @@
 ﻿@page
+@model CodeCircle.Pages.CreateProjectModel
 @{
     ViewData["Title"] = "New Entry";
 }
@@ -72,8 +73,10 @@
     <h3 style="color: white; margin-bottom: 4px; font-weight: bold;">New Project Entry</h3>
     <p class="text-muted" style="margin-bottom: 30px; font-size: 14px;">Share what you're building with the community</p>
 
-    <!-- Project Form -->
-    <form method="post">
+    <div asp-validation-summary="All" class="text-danger mb-3" style="font-size: 13px;"></div>
+
+    <!-- Project Form: asp-page emits anti-forgery token (required for Razor Pages POST) -->
+    <form method="post" asp-page="/CreateProject">
 
         <!-- 1. Boxed Project Name -->
         <div class="dashboard-card mb-3" style="padding: 20px;">
@@ -129,6 +132,7 @@
 
 <!-- Scripts injected at the bottom of standard ASP.NET pages -->
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>
         // --- 1. Logic for Segmented Stage Buttons ---
         function setStage(clickedButton, stageName) {

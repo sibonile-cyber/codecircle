@@ -10,6 +10,34 @@ namespace CodeCircle.Pages
 {
     public class CreateProjectModel : PageModel
     {
+        /// <summary>
+        /// Plain DTO for validation only. Never call TryValidateModel(this) on PageModel — it walks the
+        /// entire model graph and can touch HttpContext.Session, which throws if session middleware is not registered.
+        /// </summary>
+        private sealed class CreateProjectInput
+        {
+            [Required]
+            [StringLength(80)]
+            public string ProjectName { get; set; } = string.Empty;
+
+            [Required]
+            [StringLength(2000)]
+            public string Description { get; set; } = string.Empty;
+
+            [Required]
+            [StringLength(24)]
+            public string CurrentStage { get; set; } = string.Empty;
+
+            [StringLength(120)]
+            public string SupportNeeded { get; set; } = string.Empty;
+
+            [StringLength(200)]
+            public string MilestoneUpdate { get; set; } = string.Empty;
+
+            [Range(0, 100)]
+            public int Progress { get; set; }
+        }
+
         private readonly ApplicationDbContext _context;
 
         // Inject the Database
@@ -19,22 +47,22 @@ namespace CodeCircle.Pages
         }
 
         // [BindProperty] automatically attaches the HTML form inputs by matching their 'name=' tags!
-        [BindProperty, Required, StringLength(80)]
+        [BindProperty]
         public string ProjectName { get; set; } = string.Empty;
 
-        [BindProperty, Required, StringLength(2000)]
+        [BindProperty]
         public string Description { get; set; } = string.Empty;
 
-        [BindProperty, Required, StringLength(24)]
+        [BindProperty]
         public string CurrentStage { get; set; } = "Ideating";
 
-        [BindProperty, StringLength(120)]
+        [BindProperty]
         public string SupportNeeded { get; set; } = string.Empty;
 
-        [BindProperty, StringLength(200)]
+        [BindProperty]
         public string MilestoneUpdate { get; set; } = string.Empty;
 
-        [BindProperty, Range(0, 100)]
+        [BindProperty]
         public int Progress { get; set; }
 
         public void OnGet() { }
@@ -46,6 +74,19 @@ namespace CodeCircle.Pages
             CurrentStage = string.IsNullOrWhiteSpace(CurrentStage) ? "Ideating" : CurrentStage.Trim();
             SupportNeeded = (SupportNeeded ?? string.Empty).Trim();
             MilestoneUpdate = (MilestoneUpdate ?? string.Empty).Trim();
+
+            var input = new CreateProjectInput
+            {
+                ProjectName = ProjectName,
+                Description = Description,
+                CurrentStage = CurrentStage,
+                SupportNeeded = SupportNeeded,
+                MilestoneUpdate = MilestoneUpdate,
+                Progress = Progress
+            };
+
+            ModelState.Clear();
+            TryValidateModel(input);
 
             if (!ModelState.IsValid)
             {
