@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CodeCircle.Data;
- using CodeCircle.Data;
- using CodeCircle.Models;
+using CodeCircle.Models;
 
 namespace CodeCircle.Pages
 {
@@ -14,7 +13,7 @@ namespace CodeCircle.Pages
         private readonly ApplicationDbContext _context;
 
        
-        public List<Project> LiveFeedProjects { get; set; }
+        public List<Project> LiveFeedProjects { get; set; } = new();
 
         public IndexModel(ApplicationDbContext context)
         {

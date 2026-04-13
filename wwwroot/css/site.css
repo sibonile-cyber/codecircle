@@ -1,4 +1,4 @@
-﻿/* =============================
+/* =============================
    1. GLOBAL VARIABLES & BASE
    ============================= */
 :root {
@@ -11,6 +11,12 @@
     --text-muted: #8b958b;
     --radius-md: 8px;
     --radius-lg: 12px;
+    --glass-fill: rgba(255, 255, 255, 0.04);
+    --glass-fill-hover: rgba(255, 255, 255, 0.055);
+    --glass-stroke: rgba(255, 255, 255, 0.08);
+    --glow-green: 0 0 0 1px rgba(34, 197, 94, 0.35), 0 0 22px rgba(34, 197, 94, 0.18);
+    --sidebar-muted: #5c866c;
+    --sidebar-heading: rgba(92, 134, 108, 0.72);
 }
 
 body {
@@ -18,7 +24,9 @@ body {
     min-height: 100vh;
     background-color: var(--bg-dark);
     color: var(--text-primary);
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
 }
 
 a {
@@ -73,7 +81,7 @@ a {
 }
 
 .section-title {
-    color: #444c44;
+    color: var(--sidebar-heading);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -82,19 +90,75 @@ a {
 }
 
 .nav-item {
-    color: var(--text-muted);
+    color: var(--sidebar-muted);
     padding: 10px 12px;
     margin-bottom: 4px;
     border-radius: var(--radius-md);
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-weight: 500;
     transition: all 0.2s ease;
 }
 
-    .nav-item:hover, .nav-item.active {
-        background-color: #151f15;
-        color: var(--brand-green);
-    }
+/* Bulletproof: prevent browser default blue/purple link states in sidebar */
+.sidebar a.nav-item:link,
+.sidebar a.nav-item:visited,
+.sidebar a.nav-item:hover,
+.sidebar a.nav-item:active {
+    color: var(--sidebar-muted);
+    text-decoration: none;
+}
+
+.sidebar a.nav-item.active:link,
+.sidebar a.nav-item.active:visited,
+.sidebar a.nav-item.active:hover,
+.sidebar a.nav-item.active:active {
+    color: var(--brand-green);
+}
+
+.nav-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 10px; /* iOS app icon vibe */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+    color: inherit;
+}
+
+.nav-icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.nav-badge {
+    margin-left: auto;
+    background: rgba(34, 197, 94, 0.10);
+    color: var(--brand-green);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    padding: 2px 8px;
+    border-radius: 999px; /* iOS pill */
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.nav-item:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nav-item.active {
+    color: var(--brand-green);
+    background: rgba(34, 197, 94, 0.06);
+    box-shadow: var(--glow-green);
+    border: 1px solid rgba(34, 197, 94, 0.22);
+}
 
 .sidebar-spacer {
     flex-grow: 1; /* Pushes the account block down to the bottom */
@@ -104,17 +168,19 @@ a {
    4. DASHBOARD CARDS & BADGES
    ============================= */
 .dashboard-card {
-    background-color: var(--panel-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    margin-bottom: 20px;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    background-color: var(--glass-fill);
+    border: 1px solid var(--glass-stroke);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
     .dashboard-card:hover {
-        border-color: var(--brand-green);
-        transform: translateY(-2px);
+        border-color: rgba(34, 197, 94, 0.3);
+        background-color: var(--glass-fill-hover);
     }
 
 .user-avatar {
@@ -131,14 +197,31 @@ a {
 }
 
 .badge-building {
-    background-color: rgba(34, 197, 94, 0.1);
+    background-color: transparent;
     color: var(--brand-green);
-    border: 1px solid var(--brand-green);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    padding: 6px 14px;
+    border-radius: 999px; /* iOS pill */
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--brand-green);
+    border-radius: 50%;
     display: inline-block;
+    margin-right: 8px;
+    animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 
 .btn-green {
@@ -199,17 +282,54 @@ a {
    ============================= */
 .progress-track {
     width: 100%;
-    height: 6px;
-    background-color: #1e261e;
-    border-radius: 10px;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 999px; /* capsule */
     overflow: hidden;
 }
 
 .progress-fill {
     height: 100%;
     background-color: var(--brand-green);
-    border-radius: 10px;
+    border-radius: 999px;
     transition: width 0.5s ease;
+}
+
+/* =============================
+   10. TYPOGRAPHY (APPLE-LIKE)
+   ============================= */
+.page-title {
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+.page-subtitle {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.56);
+    letter-spacing: -0.01em;
+}
+
+/* =============================
+   11. MICRO DETAILS
+   ============================= */
+.milestone-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.10);
+    border: 1px solid rgba(34, 197, 94, 0.22);
+    color: var(--brand-green);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.depth-fade {
+    opacity: 0.72;
 }
 
 /* Custom Interactive Checkboxes */

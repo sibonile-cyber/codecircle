@@ -1,0 +1,407 @@
+@page
+@model CodeCircle.Pages.CollabRequestsModel
+@{
+    ViewData["Title"] = "Collab Requests";
+}
+
+<style>
+    /* Stats Card Styles */
+    .stat-card {
+        background-color: #0d140e;
+        border: 1px solid #1a2e1f;
+        border-radius: 12px;
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        min-width: 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .stat-card:hover {
+        background-color: #111a11;
+        transform: translateY(-2px);
+    }
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+    }
+    
+    /* Tags inside the request card */
+    .req-tag {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        display: inline-block;
+        border: 1px solid transparent;
+    }
+    .tag-pending { background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3); }
+    .tag-new { background-color: rgba(34, 197, 94, 0.1); color: #22c55e; border-color: rgba(34, 197, 94, 0.3); }
+    .tag-blue { background-color: rgba(59, 130, 246, 0.1); color: #3b82f6; border-color: rgba(59, 130, 246, 0.3); }
+    .tag-teal { background-color: rgba(20, 184, 166, 0.1); color: #14b8a6; border-color: rgba(20, 184, 166, 0.3); }
+    .tag-declined { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
+
+    /* Target project block */
+    .project-link-block {
+        background-color: #111a11;
+        border: 1px solid #1a2e1f;
+        border-radius: 8px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 16px 0;
+    }
+
+    /* Skill pill */
+    .skill-pill {
+        border: 1px solid #2a3a2a;
+        color: #a0b0a0;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 11px;
+        background-color: transparent;
+    }
+
+    /* Message box */
+    .req-message {
+        background-color: #0a0e0a;
+        border: 1px solid #1a2e1f;
+        border-radius: 8px;
+        padding: 16px;
+        color: #d1d5db;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-top: 16px;
+    }
+
+    /* Flex Utilities  */
+    .flex-row { display: flex; flex-direction: row; }
+    .flex-col { display: flex; flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+    .mt-3 { margin-top: 12px; }
+</style>
+
+<div style="max-width: 100%;">
+    <!-- Header -->
+    <div class="mb-4 mt-3">
+        <h3 class="mb-2 text-white" style="font-weight: bold; margin: 0;">Collab Requests</h3>
+        <p class="text-muted" style="font-size: 14px; margin: 0;">Manage collaboration requests you've sent and received</p>
+    </div>
+
+    <!-- 4 Stats Cards -->
+    <div class="flex-row gap-3 mb-4">
+        <!-- Card 1 -->
+        <div class="stat-card" data-color="#f59e0b">
+            <div class="flex-row items-center mb-2">
+                <div class="stat-icon" style="background-color: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <span style="font-size: 22px; font-weight: bold; color: white; line-height: 1;">1</span>
+            </div>
+            <div style="font-size: 13px; color: #6a7c6a; font-weight: 500;">Awaiting your reply</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="stat-card" data-color="#3b82f6">
+            <div class="flex-row items-center mb-2">
+                <div class="stat-icon" style="background-color: #0f172a; color: #3b82f6; border: 1px solid #1e293b;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <span style="font-size: 22px; font-weight: bold; color: white; line-height: 1;">3</span>
+            </div>
+            <div style="font-size: 13px; color: #6a7c6a; font-weight: 500;">Sent by you</div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="stat-card" data-color="#22c55e">
+            <div class="flex-row items-center mb-2">
+                <div class="stat-icon" style="background-color: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <span style="font-size: 22px; font-weight: bold; color: white; line-height: 1;">2</span>
+            </div>
+            <div style="font-size: 13px; color: #6a7c6a; font-weight: 500;">Active collabs</div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="stat-card" data-color="#6a7c6a">
+            <div class="flex-row items-center mb-2">
+                <div class="stat-icon" style="background-color: #1a1a1a; color: #6a7c6a; border: 1px solid #333;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <span style="font-size: 22px; font-weight: bold; color: white; line-height: 1;">2</span>
+            </div>
+            <div style="font-size: 13px; color: #6a7c6a; font-weight: 500;">Declined</div>
+        </div>
+    </div>
+
+    <!-- Filters/Tabs -->
+    <div class="flex-row justify-between items-center mb-4">
+        
+       
+        <div style="display: inline-flex; border: 1px solid #1a2e1f; border-radius: 20px; padding: 4px;">
+            <button id="tab-received" style="display: flex; align-items: center; gap: 8px; background-color: rgba(34, 197, 94, 0.1); border: none; padding: 6px 16px; border-radius: 16px; color: #22c55e; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> 
+                Received
+                <span id="badge-received" class="flex-row items-center justify-center" style="width: 18px; height: 18px; border: 1px solid #22c55e; border-radius: 50%; font-size: 11px; background-color: transparent;">1</span>
+            </button>
+            <button id="tab-sent" style="display: flex; align-items: center; gap: 8px; background-color: transparent; border: none; padding: 6px 16px; border-radius: 16px; color: #6a7c6a; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                Sent
+                <span id="badge-sent" class="flex-row items-center justify-center" style="width: 18px; height: 18px; border: 1px solid #1a4024; border-radius: 50%; font-size: 11px; color: #22c55e; background-color: transparent;">3</span>
+            </button>
+        </div>
+        
+        <div class="flex-row items-center gap-2" style="color: #6a7c6a; font-size: 13px;">
+            Sort: 
+            <select style="background-color: #0d140e; color: white; border: 1px solid #1a2e1f; padding: 4px 12px; border-radius: 6px; font-size: 13px; outline: none; -webkit-appearance: none; padding-right: 24px; background-image: url('data:image/svg+xml;utf8,<svg fill=\"%236a7c6a\" height=\"20\" viewBox=\"0 0 24 24\" width=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>'); background-repeat: no-repeat; background-position: right 2px center; cursor: pointer;">
+                <option>Newest first</option>
+                <option>Oldest first</option>
+                <option>Pending first</option>
+                <option selected>Accepted first</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="list-header" style="font-size: 11px; font-weight: bold; color: #6a7c6a; letter-spacing: 1px; margin-bottom: 16px; text-transform: uppercase;">
+        PENDING · @Model.ReceivedRequests.Count(r => r.Status == "Pending") REQUESTS NEED YOUR RESPONSE
+    </div>
+
+    <!-- RECEIVED LIST -->
+    <div id="received-list">
+        
+        @if (!Model.ReceivedRequests.Any())
+        {
+            <div style="color: #6a7c6a; font-size: 14px; padding: 24px; border: 1px dashed #1a2e1f; border-radius: 12px; text-align: center;">You have no received collaboration requests.</div>
+        }
+        
+        @foreach (var request in Model.ReceivedRequests)
+        {
+            <!-- Main Card -->
+            <div class="dashboard-card" style="border-color: #1a2e1f; border-radius: 12px; padding: 24px; background-color: #050a06; margin-bottom: 24px; position: relative;">
+                <span style="position: absolute; right: 24px; top: 24px; color: #6a7c6a; font-size: 12px;">@request.CreatedAt.ToString("g")</span>
+
+                <div class="flex-row items-center gap-3 mb-3">
+                    <div class="wall-avatar" style="width: 44px; height: 44px; font-size: 14px; background-color: #1a3320; color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">
+                        @(string.IsNullOrEmpty(request.SenderUserName) ? "U" : request.SenderUserName.Substring(0, Math.Min(2, request.SenderUserName.Length)).ToUpper())
+                    </div>
+                    <div>
+                        <div style="color: white; font-weight: bold; font-size: 16px;">@request.SenderUserName</div>
+                        <div style="color: #6a7c6a; font-size: 13px;">@@@request.SenderUserName.ToLower().Replace(" ", "") · Developer</div>
+                    </div>
+                </div>
+
+                <div class="flex-row gap-2 mb-3" style="flex-wrap: wrap;">
+                    <span class="req-tag tag-orange">Awaiting your reply</span>
+                    @if (request.Status == "Pending")
+                    {
+                        <span class="req-tag tag-orange">No reply yet</span>
+                    } else
+                    {
+                        <span class="req-tag tag-green">@request.Status</span>
+                    }
+                    <span class="req-tag tag-teal">Requested: @request.RoleRequested</span>
+                </div>
+
+                <div class="project-link-block">
+                    <div class="flex-row items-center gap-3">
+                        <div style="width: 32px; height: 32px; background-color: #1a2e1f; border-radius: 6px; display: flex; align-items: center; justify-content: center; border: 1px solid #2a3a2a;">
+                            <span style="color: #22c55e; font-size: 14px;">💻</span>
+                        </div>
+                        <div>
+                            <div style="color: white; font-weight: bold; font-size: 14px;">@request.ProjectName</div>
+                            <div style="color: #6a7c6a; font-size: 12px;">@request.ProjectDescription</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row gap-2 mb-4" style="flex-wrap: wrap;">
+                    @foreach (var skill in request.SkillsRequested.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <span class="skill-pill">@skill.Trim()</span>
+                    }
+                </div>
+
+                <div class="req-message mb-3">
+                    @request.Message
+                </div>
+
+                <!-- Interactive Action State -->
+                @if (request.Status == "Pending")
+                {
+                    <div class="flex-row gap-3">
+                        <form method="post" asp-page-handler="Accept" style="margin: 0;">
+                            <input type="hidden" name="requestId" value="@request.Id" />
+                            <button type="submit" class="btn btn-green" style="height: 36px; padding: 0 24px; border-radius: 8px; font-size: 13px; font-weight: 600;">Accept request</button>
+                        </form>
+                        <form method="post" asp-page-handler="Decline" style="margin: 0;">
+                            <input type="hidden" name="requestId" value="@request.Id" />
+                            <button type="submit" class="btn" style="height: 36px; background-color: transparent; color: #a0b0a0; border: 1px solid #2a3a2a; padding: 0 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='#1a2e1f'" onmouseout="this.style.backgroundColor='transparent'">Decline</button>
+                        </form>
+                        <a href="/Messages" class="btn" style="display: flex; align-items: center; height: 36px; background-color: transparent; color: #a0b0a0; border: 1px solid #2a3a2a; padding: 0 20px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: 0.2s;" onmouseover="this.style.backgroundColor='#1a2e1f'" onmouseout="this.style.backgroundColor='transparent'">Message</a>
+                    </div>
+                }
+                else if (request.Status == "Accepted")
+                {
+                    <div class="flex-row items-center justify-center p-3" style="background-color: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; border-radius: 8px; color: #22c55e; font-size: 14px; font-weight: 500;">
+                        ✓ You accepted this request. Now collaborating!
+                    </div>
+                }
+                else if (request.Status == "Declined")
+                {
+                    <div class="flex-row items-center justify-center p-3" style="background-color: transparent; border: 1px solid #2a3a2a; border-radius: 8px; color: #6a7c6a; font-size: 14px; font-weight: 500;">
+                        ✕ You declined this request. Sender has been notified.
+                    </div>
+                }
+            </div>
+        }
+    </div> <!-- END RECEIVED LIST -->
+
+    </div> <!-- END RECEIVED LIST -->
+
+    <!-- SENT LIST (Hidden by default) -->
+    <div id="sent-list" style="display: none;">
+        
+        @if (!Model.SentRequests.Any())
+        {
+            <div style="color: #6a7c6a; font-size: 14px; padding: 24px; border: 1px dashed #1a2e1f; border-radius: 12px; text-align: center;">You have not sent any collaboration requests.</div>
+        }
+
+        @foreach (var request in Model.SentRequests)
+        {
+            <!-- Sent Card -->
+             <div class="dashboard-card" style="border-color: #1a2e1f; border-radius: 12px; padding: 24px; background-color: #050a06; margin-bottom: 24px; position: relative;">
+                <span style="position: absolute; right: 24px; top: 24px; color: #6a7c6a; font-size: 12px;">@request.CreatedAt.ToString("g")</span>
+
+                <div class="flex-row items-center gap-3 mb-3">
+                    <div class="wall-avatar" style="width: 44px; height: 44px; font-size: 14px; background-color: #0f2c2a; color: #2dd4bf; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold;">
+                        @(string.IsNullOrEmpty(request.ReceiverUserName) ? "U" : request.ReceiverUserName.Substring(0, Math.Min(2, request.ReceiverUserName.Length)).ToUpper())
+                    </div>
+                    <div>
+                        <div style="color: white; font-weight: bold; font-size: 16px;">@request.ReceiverUserName</div>
+                        <div style="color: #6a7c6a; font-size: 13px;">@@@request.ReceiverUserName.ToLower().Replace(" ", "") · Developer</div>
+                    </div>
+                </div>
+
+                <div class="flex-row gap-2 mb-3" style="flex-wrap: wrap;">
+                    <span class="req-tag" style="background-color: rgba(245, 158, 11, 0.05); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4);">@request.Status</span>
+                    <span class="req-tag" style="background-color: rgba(59, 130, 246, 0.05); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.4);">Requested: @request.RoleRequested</span>
+                </div>
+
+                <div class="project-link-block">
+                    <div class="flex-row items-center gap-3">
+                        <div style="width: 32px; height: 32px; background-color: #1a2e1f; border-radius: 6px; display: flex; align-items: center; justify-content: center; border: 1px solid #2a3a2a;">
+                            <span style="color: #22c55e; font-size: 14px;">💻</span>
+                        </div>
+                        <div>
+                            <div style="color: white; font-weight: bold; font-size: 14px;">@request.ProjectName</div>
+                            <div style="color: #6a7c6a; font-size: 12px;">@request.ProjectDescription</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-row gap-2 mb-4" style="flex-wrap: wrap;">
+                     @foreach (var skill in request.SkillsRequested.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <span class="skill-pill">@skill.Trim()</span>
+                    }
+                </div>
+
+                <div class="req-message mb-3">
+                    @request.Message
+                </div>
+
+                <!-- Interactive Action State -->
+                <div class="flex-row gap-3">
+                    @if (request.Status == "Pending")
+                    {
+                        <form method="post" asp-page-handler="Withdraw" style="margin: 0;">
+                             <input type="hidden" name="requestId" value="@request.Id" />
+                             <button type="submit" class="btn" style="height: 36px; background-color: transparent; color: #a0b0a0; border: 1px solid #2a3a2a; padding: 0 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='#1a2e1f'" onmouseout="this.style.backgroundColor='transparent'">Withdraw request</button>
+                        </form>
+                    }
+                    <button class="btn" style="height: 36px; background-color: transparent; color: #a0b0a0; border: 1px solid #2a3a2a; padding: 0 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s;" onmouseover="this.style.backgroundColor='#1a2e1f'" onmouseout="this.style.backgroundColor='transparent'">View Profile</button>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Stat Cards interactivity
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    statCards.forEach(c => c.style.borderColor = '#1a2e1f');
+                    this.style.borderColor = this.getAttribute('data-color');
+                });
+            });
+
+            // Tab Toggle Interactivity
+            const tabReceived = document.getElementById('tab-received');
+            const tabSent = document.getElementById('tab-sent');
+            const badgeReceived = document.getElementById('badge-received');
+            const badgeSent = document.getElementById('badge-sent');
+            
+            const receivedList = document.getElementById('received-list');
+            const sentList = document.getElementById('sent-list');
+            const listHeader = document.getElementById('list-header');
+
+            tabReceived.addEventListener('click', function() {
+                // Set Active Received
+                tabReceived.style.backgroundColor = 'rgba(34, 197, 94, 0.1)';
+                tabReceived.style.color = '#22c55e';
+                badgeReceived.style.borderColor = '#22c55e';
+                badgeReceived.style.color = 'inherit';
+
+                // Set Inactive Sent
+                tabSent.style.backgroundColor = 'transparent';
+                tabSent.style.color = '#6a7c6a';
+                badgeSent.style.borderColor = '#1a4024';
+                badgeSent.style.color = '#22c55e';
+
+                // Swap views
+                receivedList.style.display = 'block';
+                sentList.style.display = 'none';
+                listHeader.innerHTML = 'PENDING · @Model.ReceivedRequests.Count(r => r.Status == "Pending") REQUESTS NEED YOUR RESPONSE';
+            });
+
+            tabSent.addEventListener('click', function() {
+                // Set Active Sent
+                tabSent.style.backgroundColor = 'rgba(34, 197, 94, 0.1)';
+                tabSent.style.color = '#22c55e';
+                badgeSent.style.borderColor = '#22c55e';
+                badgeSent.style.color = 'inherit';
+
+                // Set Inactive Received
+                tabReceived.style.backgroundColor = 'transparent';
+                tabReceived.style.color = '#6a7c6a';
+                badgeReceived.style.borderColor = '#1a4024';
+                badgeReceived.style.color = '#22c55e';
+
+                // Swap views
+                receivedList.style.display = 'none';
+                sentList.style.display = 'block';
+                listHeader.innerHTML = 'PENDING · @Model.SentRequests.Count(r => r.Status == "Pending") WAITING FOR RESPONSE';
+            });
+        });
+    </script>
+}

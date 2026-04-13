@@ -6,7 +6,7 @@
 
 <div style="display: flex; height: 80vh; min-height: 700px; border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden;">
     
-  
+    <!-- Left Panel: Thread List -->
     <div style="width: 350px; background-color: var(--bg-dark); border-right: 1px solid var(--border-color); display: flex; flex-direction: column;">
         
         <!-- Header -->
@@ -131,7 +131,7 @@
         </div>
 
         <!-- Chat Area -->
-        <div style="flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;">
+        <div id="chat-messages" style="flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;">
             
             <!-- Collab Context Card -->
             <div style="background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
@@ -144,7 +144,7 @@
                         <span style="color: var(--text-primary); font-weight: bold; font-size: 14px;">DevFlow × HealthLog</span>
                     </div>
                 </div>
-                <span style="background-color: #1f3652; color: #60a5fa; font-size: 12px; padding: 4px 12px; border-radius: 16px;">Pending response</span>
+                <span id="collab-status-badge" style="background-color: #1f3652; color: #60a5fa; font-size: 12px; padding: 4px 12px; border-radius: 16px;">Pending response</span>
             </div>
 
             <!-- Date Separator -->
@@ -166,29 +166,52 @@
                     <div style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">
                         Hi Alex! I've been following HealthLog since you posted it. I'm an AI engineer and I think I can really help with the data insights layer. Would love to chat!
                     </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn-green" style="padding: 8px 16px; font-size: 13px; font-weight: bold;">Accept request</button>
+                    <div id="collab-actions" style="display: flex; gap: 12px;">
+                        <button id="btn-accept" class="btn-green" style="padding: 8px 16px; font-size: 13px; font-weight: bold;">Accept request</button>
                         <button class="btn-outline-dark" style="padding: 8px 16px; font-size: 13px;">Decline</button>
                     </div>
-                </div>
-            </div>
-
-            <!-- Sara's Message -->
-            <div style="display: flex; gap: 16px; margin-top: 10px;">
-                <span style="width: 32px; height: 32px; border-radius: 50%; background-color: #1a3320; color: var(--brand-green); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">SR</span>
-                <div>
-                    <span style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px; display: block;">2:14 PM</span>
-                    <div style="color: var(--text-muted); font-size: 13px; line-height: 1.5;">
-                        We should sync on the open source collab idea I mentioned in the feed — I think there's something really cool we could ship together.
+                    <div id="collab-accepted" style="display: none; gap: 8px; margin-top: 16px;">
+                        <span style="border: 1px solid var(--brand-green); color: var(--brand-green); border-radius: 16px; padding: 4px 12px; font-size: 12px; font-weight: 500;">✓ Collaboration accepted</span>
                     </div>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 16px; margin-top: 10px;">
-                <span style="width: 32px; height: 32px; border-radius: 50%; background-color: #331a1a; color: #f87171; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">DO</span>
-                <div>
-                    <span style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px; display: block;">2 days ago</span>
+            <!-- Before accept, we had old messages here. But user wants them revealed or altered. Let's wrap them so we can show them on accept -->
+            <div id="post-accept-messages" style="display: none; flex-direction: column; gap: 20px;">
+                
+                <!-- Sara: That sounds amazing -->
+                <div style="display: flex; gap: 16px; margin-top: 10px;">
+                    <span style="width: 32px; height: 32px; border-radius: 50%; background-color: #1a3320; color: var(--brand-green); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">SR</span>
+                    <div>
+                        <span style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px; display: block;">2:14 PM</span>
+                        <div style="background-color: #111a11; border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 12px; padding: 12px 16px; font-size: 13px; line-height: 1.5; border-top-left-radius: 4px;">
+                            That sounds amazing! I'd love to have you on board for DevFlow. When can we get on a call to discuss the LLM review engine?
+                        </div>
+                    </div>
                 </div>
+
+                <!-- AK Reply: This week works great -->
+                <div style="display: flex; gap: 16px; margin-top: 10px; flex-direction: row-reverse;">
+                    <span style="width: 32px; height: 32px; border-radius: 50%; background-color: #1a3320; color: var(--brand-green); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">AK</span>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                        <span style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px; display: block;">2:18 PM</span>
+                        <div style="background-color: #225a22; color: #fff; border-radius: 12px; padding: 12px 16px; font-size: 13px; line-height: 1.5; border-top-right-radius: 4px;">
+                            This week works great — I'm free Thursday afternoon or Friday morning. I'll share my current architecture doc beforehand so we can hit the ground running!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Old SR/DO message: we should sync -->
+                <div style="display: flex; gap: 16px; margin-top: 10px;">
+                    <span style="width: 32px; height: 32px; border-radius: 50%; background-color: #331a1a; color: #f87171; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">DO</span>
+                    <div>
+                        <span style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px; display: block;">2 days ago</span>
+                        <div style="background-color: #111a11; border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 12px; padding: 12px 16px; font-size: 13px; line-height: 1.5; border-top-left-radius: 4px;">
+                            We should sync on the open source collab idea I mentioned in the feed — I think there's something really cool we could ship together.
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -202,12 +225,12 @@
             <div style="display: flex; align-items: center; gap: 12px;">
                 <button style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2" />
                     </svg>
                 </button>
                 <div style="flex: 1; position: relative;">
-                    <input type="text" placeholder="Write a message..." style="width: 100%; background-color: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-primary); padding: 14px 16px; border-radius: var(--radius-md); padding-right: 50px;" />
-                    <button style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background-color: #1a3320; color: var(--brand-green); border: none; width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                    <input id="chat-input" type="text" placeholder="Write a message..." style="width: 100%; background-color: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-primary); padding: 14px 16px; border-radius: var(--radius-md); padding-right: 50px;" />
+                    <button id="btn-send" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background-color: #1a3320; color: var(--brand-green); border: none; width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="22" y1="2" x2="11" y2="13"></line>
                             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -218,3 +241,71 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnAccept = document.getElementById('btn-accept');
+            const collabActions = document.getElementById('collab-actions');
+            const collabAccepted = document.getElementById('collab-accepted');
+            const postAcceptMessages = document.getElementById('post-accept-messages');
+            const collabStatusBadge = document.getElementById('collab-status-badge');
+
+            const chatInput = document.getElementById('chat-input');
+            const btnSend = document.getElementById('btn-send');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // Accept button logic
+            if(btnAccept) {
+                btnAccept.addEventListener('click', () => {
+                    collabActions.style.display = 'none';
+                    collabAccepted.style.display = 'flex';
+                    postAcceptMessages.style.display = 'flex';
+                    
+                    if(collabStatusBadge) {
+                        collabStatusBadge.textContent = 'Accepted';
+                        collabStatusBadge.style.backgroundColor = 'rgba(34, 197, 94, 0.1)';
+                        collabStatusBadge.style.color = 'var(--brand-green)';
+                    }
+                    setTimeout(() => chatMessages.scrollTop = chatMessages.scrollHeight, 100);
+                });
+            }
+
+            // Send message logic
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+
+                const wrapDiv = document.createElement('div');
+                wrapDiv.style.cssText = "display: flex; gap: 16px; margin-top: 10px; flex-direction: row-reverse;";
+
+                wrapDiv.innerHTML = `
+                    <span style="width: 32px; height: 32px; border-radius: 50%; background-color: #1a3320; color: var(--brand-green); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0;">AK</span>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                        <span style="color: var(--text-muted); font-size: 11px; margin-bottom: 6px; display: block;">Just now</span>
+                        <div style="background-color: #225a22; color: #fff; border-radius: 12px; border-top-right-radius: 4px; padding: 12px 16px; font-size: 13px; line-height: 1.5; max-width: 400px; word-wrap: break-word;">
+                            ${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                        </div>
+                    </div>
+                `;
+
+                // Add message to tracking block to ensure chronological scrolling
+                postAcceptMessages.appendChild(wrapDiv);
+                
+                chatInput.value = '';
+                setTimeout(() => chatMessages.scrollTop = chatMessages.scrollHeight, 100);
+            }
+
+            if(btnSend) {
+                btnSend.addEventListener('click', sendMessage);
+            }
+            if(chatInput) {
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
+        });
+    </script>
+}

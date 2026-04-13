@@ -47,5 +47,29 @@ namespace CodeCircle.Pages
 
             return Page();
         }
+
+        public async Task<IActionResult> OnPostRequestCollabAsync(string receiverUserName)
+        {
+            var senderUser = (User.Identity?.IsAuthenticated == true ? User.Identity?.Name : null) ?? "Alex Kim";
+
+            var req = new CollabRequest
+            {
+                SenderUserName = senderUser,
+                ReceiverUserName = string.IsNullOrEmpty(receiverUserName) ? "TargetUser" : receiverUserName,
+                ProjectName = "DevFlow",
+                ProjectDescription = "AI code review tool",
+                RoleRequested = "Backend dev",
+                SkillsRequested = "Python, C#",
+                Message = $"Hi {receiverUserName}, I'd love to collaborate with you!",
+                Status = "Pending"
+            };
+
+            _db.CollabRequests.Add(req);
+            await _db.SaveChangesAsync();
+
+            // Redirect back or pass a flag to show UI success state
+            TempData["CollabRequested"] = true;
+            return RedirectToPage(new { username = receiverUserName });
+        }
     }
 }

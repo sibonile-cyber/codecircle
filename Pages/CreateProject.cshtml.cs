@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
-// Make sure you add using statements for your Data and Models folders:
- using CodeCircle.Data;
- using CodeCircle.Models;
+using CodeCircle.Models;
 
 namespace CodeCircle.Pages
 {
@@ -20,11 +18,11 @@ namespace CodeCircle.Pages
         }
 
         // [BindProperty] automatically attaches the HTML form inputs by matching their 'name=' tags!
-        [BindProperty] public string ProjectName { get; set; }
-        [BindProperty] public string Description { get; set; }
-        [BindProperty] public string CurrentStage { get; set; }
-        [BindProperty] public string SupportNeeded { get; set; }
-        [BindProperty] public string MilestoneUpdate { get; set; }
+        [BindProperty] public string ProjectName { get; set; } = string.Empty;
+        [BindProperty] public string Description { get; set; } = string.Empty;
+        [BindProperty] public string CurrentStage { get; set; } = string.Empty;
+        [BindProperty] public string SupportNeeded { get; set; } = string.Empty;
+        [BindProperty] public string MilestoneUpdate { get; set; } = string.Empty;
         [BindProperty] public int Progress { get; set; }
 
         public void OnGet() { }

@@ -12,6 +12,7 @@ namespace CodeCircle.Data
         }
         public DbSet<CodeCircle.Models.Project> Projects { get; set; }
         public DbSet<Celebration> Celebrations { get; set; }
+        public DbSet<CollabRequest> CollabRequests { get; set; }
 
     }
 }
