@@ -1,285 +1,439 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+﻿/* =============================
+   1. GLOBAL VARIABLES & BASE
+   ============================= */
 :root {
-    
-    --bg-app: #181d1a; 
-    --bg-sidebar: #1d2522; 
-    --bg-card: #202a27; 
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --accent-green: #67d671; 
-    --accent-dark-green: #3ca846; 
-    --border-color: #2b3834;
-    --border-radius: 12px;
+    --bg-dark: #0a0a09;
+    --panel-bg: #111411;
+    --border-color: #1e261e;
+    --brand-green: #22c55e;
+    --brand-green-hover: #16a34a;
+    --text-primary: #ffffff;
+    --text-muted: #8b958b;
+    --radius-md: 8px;
+    --radius-lg: 12px;
 }
 
 body {
-    background-color: var(--bg-app);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
     margin: 0;
-    padding: 0;
-}
-
-
-.app-container {
-    display: grid;
-    grid-template-columns: 240px 1fr;
     min-height: 100vh;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
+
+/* =============================
+   2. MASTER LAYOUT (SIDEBAR & MAIN)
+   ============================= */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
 
 .sidebar {
-    background-color: var(--bg-sidebar);
+    width: 250px;
     border-right: 1px solid var(--border-color);
-    padding: 20px 0;
+    padding: 24px;
     display: flex;
     flex-direction: column;
 }
 
-.sidebar-logo {
+.main-content {
+    flex: 1;
+    padding: 20px 40px;
+}
+
+.top-bar {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 20px 30px 20px;
-    font-size: 22px;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+}
+
+/* =============================
+   3. SIDEBAR NAVIGATION
+   ============================= */
+.brand {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.beta-tag {
+    font-size: 10px;
+    background: #111;
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: #666;
+    border: 1px solid #333;
+    margin-left: 5px;
+}
+
+.section-title {
+    color: #444c44;
+    font-size: 11px;
     font-weight: 700;
-    color: white;
+    letter-spacing: 1.5px;
+    margin: 24px 0 10px 12px;
+    display: block;
 }
 
-.sidebar-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.nav-item {
+    color: var(--text-muted);
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    border-radius: var(--radius-md);
+    display: block;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.menu-item {
-    padding: 15px 25px;
+    .nav-item:hover, .nav-item.active {
+        background-color: #151f15;
+        color: var(--brand-green);
+    }
+
+.sidebar-spacer {
+    flex-grow: 1; /* Pushes the account block down to the bottom */
+}
+
+/* =============================
+   4. DASHBOARD CARDS & BADGES
+   ============================= */
+.dashboard-card {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+    .dashboard-card:hover {
+        border-color: var(--brand-green);
+        transform: translateY(-2px);
+    }
+
+.user-avatar {
+    background-color: #1a3320;
+    color: var(--brand-green);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 15px;
-    color: var(--text-muted);
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    transition: 0.2s;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
 }
 
-    .menu-item:hover {
-        color: white;
-        background: rgba(255,255,255,0.05);
-    }
-
-    .menu-item.active {
-        background: linear-gradient(90deg, #5bb463, #7bed86);
-        color: #111815; 
-        font-weight: 600;
-        border-radius: 0 20px 20px 0;
-        margin-right: 15px; 
-    }
-
-
-.main-wrapper {
-    padding: 40px;
+.badge-building {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: var(--brand-green);
+    border: 1px solid var(--brand-green);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
 }
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 340px; 
+.btn-green {
+    background-color: var(--brand-green);
+    color: #000;
+    border: none;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+    .btn-green:hover {
+        background-color: var(--brand-green-hover);
+        opacity: 0.9;
+    }
+
+/* =============================
+   5. LIVE FEED LAYOUT
+   ============================= */
+.feed-layout {
+    display: flex;
     gap: 30px;
 }
 
-.feed-header {
+.feed-main {
+    flex: 7;
+}
+
+.feed-widgets {
+    flex: 3;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card-header-flex {
+    display: flex;
     align-items: center;
-    margin-bottom: 25px;
+    gap: 10px;
 }
 
-    .feed-header h1 {
-        font-size: 24px;
-        font-weight: 700;
-    }
-
-.btn-primary {
-    background: var(--accent-green);
-    color: #111815;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s;
+.user-details strong {
+    display: block;
+    color: var(--text-primary);
 }
 
-    .btn-primary:hover {
-        background: var(--accent-dark-green);
-        color: white;
-    }
-
-.glass-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 20px;
-    margin-bottom: 20px;
-}
-/* Celebration Wall Widget */
-.celebration-wall {
-    background-color: #1A1E23; 
-    border: 1px solid #2D333B;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.user-details .time-ago {
+    font-size: 12px;
+    color: var(--text-muted);
 }
 
-.celebration-header h3 {
-    font-size: 1.2rem;
-    color: #E2E8F0;
-    margin-bottom: 4px;
-    font-weight: 700;
+.project-title {
+    color: var(--brand-green);
+    margin-top: 15px;
 }
 
-.celebration-header p {
-    color: #8B949E;
-    font-size: 0.85rem;
-    margin-bottom: 20px;
+/* =============================
+   6. MY PROJECTS (PROGRESS BAR)
+   ============================= */
+.progress-track {
+    width: 100%;
+    height: 6px;
+    background-color: #1e261e;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.celebration-item {
+.progress-fill {
+    height: 100%;
+    background-color: var(--brand-green);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Custom Interactive Checkboxes */
+.custom-checkbox {
     display: flex;
-    align-items: flex-start;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #2D333B;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: color 0.2s;
 }
 
-    .celebration-item:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
+    .custom-checkbox:hover {
+        color: var(--text-primary);
     }
 
-.avatar {
-    width: 40px;
-    height: 40px;
+    .custom-checkbox input {
+        display: none;
+    }
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-checkbox input:checked + .checkmark {
+    background-color: rgba(34, 197, 94, 0.2);
+    border-color: var(--brand-green);
+}
+
+    .custom-checkbox input:checked + .checkmark::after {
+        content: "✓";
+        color: var(--brand-green);
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+.custom-checkbox input:checked ~ .label-text {
+    color: var(--text-primary);
+}
+
+/* =============================
+   7. FORMS (NEW ENTRY)
+   ============================= */
+input[type="text"], textarea, select {
+    width: 100%;
+    background-color: #050505;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+    input:focus, textarea:focus {
+        outline: none;
+        border-color: var(--brand-green);
+        box-shadow: 0 0 0 1px var(--brand-green);
+    }
+
+.stage-selector {
+    display: flex;
+    gap: 12px;
+}
+
+.stage-btn {
+    flex: 1;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 10px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+    .stage-btn.active {
+        border-color: var(--brand-green);
+        color: var(--brand-green);
+        background-color: rgba(34, 197, 94, 0.05); /* Soft transparent green */
+    }
+
+/* =============================
+   8. CELEBRATION WALL
+   ============================= */
+.celebration-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+}
+
+.celebration-card {
+    width: 250px;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.wall-avatar {
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: white;
-    margin-right: 14px;
-    flex-shrink: 0;
+    font-size: 20px;
 }
 
-.bg-success {
-    background-color: #238636 !important;
+.text-green {
+    color: var(--brand-green) !important;
+    font-weight: 500;
 }
 
-.bg-primary {
-    background-color: #58A6FF !important;
+.border-blue {
+    border-top: 3px solid #3b82f6 !important;
 }
 
-.celebration-content {
+.border-green {
+    border-top: 3px solid var(--brand-green) !important;
+}
+
+.border-gold {
+    border-top: 3px solid #eab308 !important;
+}
+
+.dotted-card {
+    background-color: transparent !important;
+    border: 2px dashed #333 !important;
     display: flex;
     flex-direction: column;
-}
-
-    .celebration-content strong {
-        color: #C9D1D9;
-        font-size: 0.95rem;
-    }
-
-.action-text {
-    color: #8B949E;
-    font-size: 0.85rem;
-    margin-top: -2px;
-}
-
-.project-title {
-    color: #E2E8F0;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin: 4px 0 2px 0;
-}
-
-.time-ago {
-    color: #8B949E;
-    font-size: 0.75rem;
-}
-
-.post-submit-btn {
-    background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
-    color: white;
-    border: none;
-    padding: 12px;
-    font-weight: 600;
-    font-size: 1.05rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(35, 134, 54, 0.2);
-}
-
-    .post-submit-btn:hover {
-        background: linear-gradient(135deg, #2ea043 0%, #3fb950 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
-        color: white;
-    }
-
-
-.form-control {
-    background-color: #0D1117 !important;
-    color: #E2E8F0 !important;
-    border: 1px solid #30363D !important;
-    border-radius: 8px;
-    padding: 10px 15px;
-    transition: all 0.3s ease;
-}
-
-    .form-control:focus {
-        border-color: #58A6FF !important;
-        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2) !important;
-    }
-
-
-.file-upload-wrapper {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    border: 2px dashed #30363D;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    background-color: #0D1117;
-    transition: all 0.3s ease;
-}
-
-    .file-upload-wrapper:hover {
-        border-color: #58A6FF;
-        background-color: #161b22;
-    }
-
-.file-upload-input {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.file-upload-design {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #8B949E;
-}
-
-    .file-upload-design p {
-        margin: 0;
-        font-size: 0.95rem;
-        font-weight: 500;
+    .dotted-card:hover {
+        border-color: var(--brand-green) !important;
+        background-color: rgba(34, 197, 94, 0.05) !important;
     }
+/* Gold badge for when a project hits 100% */
+.badge-completed {
+    background-color: rgba(234, 179, 8, 0.1);
+    color: #eab308;
+    border: 1px solid #eab308;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+/* =============================
+   9. PROFILE DASHBOARD ELEMENTS
+   ============================= */
+/* The green skill tags (e.g. React, Node.js) */
+.skill-tag {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: var(--brand-green);
+    border: 1px solid #1a3320;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* The dark web link tags (e.g. Github, Twitter) */
+.link-tag {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+    .link-tag:hover {
+        background-color: #151f15;
+        color: var(--brand-green);
+    }
+
+/* Specific button styling for the profile top-right */
+.btn-outline-dark {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 8px 24px;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+}
+
+    .btn-outline-dark:hover {
+        border-color: var(--brand-green);
+        color: var(--brand-green);
+    }
+
+/* Activity Timeline Dots */
+.activity-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.activity-dot {
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* Section Header Typography */
+.section-header {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}

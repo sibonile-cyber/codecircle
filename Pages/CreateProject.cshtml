@@ -1,44 +1,162 @@
 ﻿@page
-@model CodeCircle.Pages.CreateProjectModel
 @{
-    ViewData["Title"] = "Start a Project";
+    ViewData["Title"] = "New Entry";
 }
 
-<div style="max-width: 600px; margin: 40px auto;">
-    <h1 style="color: var(--accent-primary); margin-bottom: 20px;">Build in Public</h1>
-    <p style="color: var(--text-muted); margin-bottom: 30px;">Share what you're working on with the CodeCircle community.</p>
+<!-- Custom styles specifically for this form to match your picture -->
+<style>
+    /* Input Box Styles */
+    .form-input-dark {
+        width: 100%;
+        background-color: #050505;
+        border: 1px solid var(--border-color);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.2s;
+    }
 
-   
-    <form method="post" class="glass-card">
+        .form-input-dark:focus {
+            outline: none;
+            border-color: var(--brand-green);
+        }
 
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Project Title</label>
-            <input type="text" asp-for="NewProject.Title" required style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(0,0,0,0.2); color: white;" placeholder="e.g., An AI-powered ToDo App" />
+    /* Segmented Stage Buttons */
+    .stage-selector {
+        display: flex;
+        gap: 10px;
+    }
+
+    .stage-btn {
+        flex: 1;
+        background-color: #050505;
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+        .stage-btn.active {
+            border-color: var(--brand-green);
+            color: var(--brand-green);
+            background-color: rgba(34, 197, 94, 0.05); /* Soft transparent green glow */
+        }
+
+    /* Custom Blue & White Range Slider */
+    .custom-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #ffffff; /* Base track color */
+        outline: none;
+        margin-top: 10px;
+    }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3b82f6; /* Blue circle thumb */
+            cursor: pointer;
+        }
+</style>
+
+<div style="max-width: 650px; margin-top: 10px;">
+    <h3 style="color: white; margin-bottom: 4px; font-weight: bold;">New Project Entry</h3>
+    <p class="text-muted" style="margin-bottom: 30px; font-size: 14px;">Share what you're building with the community</p>
+
+    <!-- Project Form -->
+    <form method="post">
+
+        <!-- 1. Boxed Project Name -->
+        <div class="dashboard-card mb-3" style="padding: 20px;">
+            <label class="text-muted mb-2" style="font-size: 13px;">Project name</label>
+            <input type="text" name="ProjectName" placeholder="e.g. DevFlow, HealthLog..." class="form-input-dark" />
         </div>
 
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Description</label>
-            <textarea asp-for="NewProject.Description" rows="4" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(0,0,0,0.2); color: white;" placeholder="What does it do?"></textarea>
+        <!-- 2. Boxed Description -->
+        <div class="dashboard-card mb-3" style="padding: 20px;">
+            <label class="text-muted mb-2" style="font-size: 13px;">Description</label>
+            <textarea name="Description" rows="3" placeholder="What are you building and why? Be specific — this shows in the live feed." class="form-input-dark" style="font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
         </div>
 
-        <div style="margin-bottom: 20px;">
-            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Current Stage</label>
-            <select asp-for="NewProject.Stage" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white;">
-                <option value="Just an Idea">Just an Idea</option>
-                <option value="Actively Building">Actively Building</option>
-                <option value="Beta Testing">Beta Testing</option>
-                <option value="Completed">Completed 🎉</option>
-            </select>
+        <!-- 3. Boxed Current Stage -->
+        <div class="dashboard-card mb-3" style="padding: 20px;">
+            <label class="text-muted mb-2" style="font-size: 13px;">Current stage</label>
+            <div class="stage-selector">
+                <button type="button" class="stage-btn active" onclick="setStage(this, 'Ideating')">Ideating</button>
+                <button type="button" class="stage-btn" onclick="setStage(this, 'Building')">Building</button>
+                <button type="button" class="stage-btn" onclick="setStage(this, 'Launching')">Launching</button>
+            </div>
+            <!-- Hidden input stores the chosen stage value for the database backend -->
+            <input type="hidden" name="CurrentStage" id="stage-input" value="Ideating" />
         </div>
 
-        <div style="margin-bottom: 30px;">
-            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Support Required</label>
-            <input type="text" asp-for="NewProject.SupportRequired" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: rgba(0,0,0,0.2); color: white;" placeholder="e.g., Need a frontend designer" />
+        <!-- 4. Boxed Support Needed -->
+        <div class="dashboard-card mb-3" style="padding: 20px;">
+            <label class="text-muted mb-2" style="font-size: 13px;">Support needed (optional)</label>
+            <input type="text" name="SupportNeeded" value="None right now" class="form-input-dark" style="font-weight: bold; color: white;" />
         </div>
 
-        <button type="submit" style="background: var(--accent-primary); color: #0f172a; font-weight: bold; width: 100%; padding: 14px; border-radius: 8px; font-size: 16px; transition: 0.3s; cursor: pointer;">
-            Launch Project
-        </button>
+        <!-- 5. Boxed Milestone & Dynamic Progress Slider -->
+        <div class="dashboard-card mb-4" style="padding: 20px;">
+            <label class="text-muted mb-2" style="font-size: 13px;">Milestone update (optional)</label>
+            <input type="text" name="MilestoneUpdate" placeholder="e.g. Just shipped the auth system!" class="form-input-dark mb-4" />
 
+            <label class="text-muted mb-2" style="font-size: 13px; display: block;">Progress %</label>
+            <input type="range" name="Progress" id="progress-slider" class="custom-slider" min="0" max="100" value="46" />
+
+            <div class="d-flex justify-content-end mt-2">
+                <!-- The dynamic text representing the slider value -->
+                <span id="progress-value" style="color: var(--brand-green); font-size: 13px;">46%</span>
+            </div>
+        </div>
+
+        <!-- 6. Bottom Submit Buttons -->
+        <div style="display: flex; gap: 10px; margin-bottom: 50px;">
+            <button type="submit" class="btn btn-green py-3" style="flex: 4; font-weight: bold;">Post to feed</button>
+            <button type="button" class="btn btn-outline-dark py-3" style="flex: 1; border-color: #333; color: var(--text-muted);">Save draft</button>
+        </div>
     </form>
 </div>
+
+<!-- Scripts injected at the bottom of standard ASP.NET pages -->
+@section Scripts {
+    <script>
+        // --- 1. Logic for Segmented Stage Buttons ---
+        function setStage(clickedButton, stageName) {
+            // Remove the green 'active' class from all stage buttons
+            document.querySelectorAll('.stage-btn').forEach(btn => btn.classList.remove('active'));
+            // Add the 'active' class to the button we just clicked
+            clickedButton.classList.add('active');
+            // Update the hidden input element so the backend receives the choice
+            document.getElementById('stage-input').value = stageName;
+        }
+
+        // --- 2. Logic for custom Blue-and-White Slider Fill ---
+        const slider = document.getElementById("progress-slider");
+        const progressValue = document.getElementById("progress-value");
+
+        function updateSliderColor() {
+            // Update the text to match the slider number
+            progressValue.innerText = slider.value + "%";
+            // Calculate percentage width (e.g. 46%)
+            const percent = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            // Paint the track: blue from 0% to X%, white from X% to 100%
+            slider.style.background = `linear-gradient(to right, #3b82f6 ${percent}%, #ffffff ${percent}%)`;
+        }
+
+        // Make the slider update instantly as you drag it
+        slider.addEventListener('input', updateSliderColor);
+
+        // Command the slider to paint itself when the page first loads
+        updateSliderColor();
+    </script>
+}

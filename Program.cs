@@ -1,6 +1,9 @@
 using CodeCircle.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CodeCircle.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
+// Bootstraps our custom Brevo Service into the ASP.NET architecture!
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 
 var app = builder.Build();
 

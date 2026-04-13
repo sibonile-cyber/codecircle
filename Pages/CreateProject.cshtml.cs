@@ -1,37 +1,54 @@
+using CodeCircle.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using CodeCircle.Data;
-using CodeCircle.Models;
+using System;
+using System.Threading.Tasks;
+// Make sure you add using statements for your Data and Models folders:
+ using CodeCircle.Data;
+ using CodeCircle.Models;
 
 namespace CodeCircle.Pages
 {
     public class CreateProjectModel : PageModel
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ApplicationDbContext _context;
 
-       
-        public CreateProjectModel(ApplicationDbContext db)
+        // Inject the Database
+        public CreateProjectModel(ApplicationDbContext context)
         {
-            _db = db;
+            _context = context;
         }
 
+        // [BindProperty] automatically attaches the HTML form inputs by matching their 'name=' tags!
+        [BindProperty] public string ProjectName { get; set; }
+        [BindProperty] public string Description { get; set; }
+        [BindProperty] public string CurrentStage { get; set; }
+        [BindProperty] public string SupportNeeded { get; set; }
+        [BindProperty] public string MilestoneUpdate { get; set; }
+        [BindProperty] public int Progress { get; set; }
 
-        [BindProperty]
-        public Project NewProject { get; set; } = new Project();
+        public void OnGet() { }
 
-        public void OnGet()
+        public async Task<IActionResult> OnPostAsync()
         {
             
-        }
-
-        public IActionResult OnPost()
-        {
-            
-            _db.Projects.Add(NewProject);
-            _db.SaveChanges();
+            var newProject = new Project
+            {
+                Title = ProjectName,
+                Description = Description,
+                Stage = CurrentStage,
+                SupportRequired = SupportNeeded,
+                DeveloperId = User.Identity?.Name ?? "Alex Kim",
+                CreatedAt = DateTime.UtcNow
+            };
 
            
+            _context.Projects.Add(newProject);
+            await _context.SaveChangesAsync();
+
+            
             return RedirectToPage("/Index");
         }
+
     }
 }

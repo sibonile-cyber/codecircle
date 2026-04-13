@@ -1,125 +1,429 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Live Feed";
 }
 
-<div class="dashboard-grid">
+<style>
+    /* Button Aesthetics */
+    .custom-filter-btn {
+        background-color: transparent !important;
+        border: 1px solid #165228 !important;
+        color: #3bda6d !important;
+        padding: 8px 18px !important;
+        border-radius: 8px !important;
+        font-size: 14.5px !important;
+        font-weight: 500 !important;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
 
-    
-    <div class="feed-column">
-        <div class="feed-header">
-            <h1>Developer Activity Feed</h1>
-            <a href="/CreateProject" class="btn-primary">Create Project</a>
-        </div>
+        .custom-filter-btn:hover {
+            background-color: rgba(34, 197, 94, 0.1) !important;
+        }
 
-       
-        <div class="glass-card">
-            
-            @foreach (var project in Model.Projects)
-            {
-                <div class="glass-card">
+    .custom-new-btn {
+        background-color: #1f8a3c !important;
+        color: #e0f8e4 !important;
+        border: none !important;
+        padding: 8px 24px !important;
+        border-radius: 8px !important;
+        font-size: 14.5px !important;
+        font-weight: 600 !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.2s;
+    }
 
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-green); color: #111815; display: flex; justify-content: center; align-items: center; font-weight: bold;">
-                            👨‍💻
-                        </div>
-                        <div style="flex-grow: 1;">
-                            <span style="font-weight: bold; color: white;">A Developer</span>
-                            <span style="background: rgba(103, 214, 113, 0.2); color: var(--accent-green); padding: 4px 10px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold;">
-                                @project.Stage
-                            </span>
-                        </div>
-                    </div>
+        .custom-new-btn:hover {
+            background-color: #1a6b26 !important;
+            color: white !important;
+        }
 
-                    
-                    <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 10px;">@project.Title</h2>
-                    <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">@project.Description</p>
+    /* Target Filter Panel Unselected Tags */
+    .filter-tag {
+        background-color: transparent;
+        border: 1px solid #1c3d26;
+        color: #4b8c5a;
+        padding: 6px 18px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
 
-                    @if (!string.IsNullOrEmpty(project.SupportRequired))
-                    {
-                        <p style="color: var(--text-main); font-size: 14px; margin-bottom: 30px;">
-                            <strong style="color: var(--accent-green);">Support Needed:</strong> @project.SupportRequired
-                        </p>
-                    }
+        .filter-tag:hover {
+            border-color: #2c5a38;
+            color: #5da86e;
+        }
 
-                    
-                    <div style="display: flex; gap: 15px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                        <button style="background: rgba(255,255,255,0.05); color: white; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">💬 Comment</button>
-                        <button style="background: rgba(255,255,255,0.05); color: white; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">✋ Raise Hand</button>
-                    </div>
+        .filter-tag.active {
+            border-color: #22c55e;
+            color: #22c55e;
+            background-color: rgba(34, 197, 94, 0.05);
+        }
 
-                </div>
+    /* The active display pills that appear underneath the Live Feed header */
+    .active-display-pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #22c55e;
+        color: #22c55e;
+        background-color: rgba(34, 197, 94, 0.05);
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+        .active-display-pill .remove-pill {
+            margin-left: 6px;
+            cursor: pointer;
+            color: #22c55e;
+            opacity: 0.6;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+
+            .active-display-pill .remove-pill:hover {
+                opacity: 1;
             }
+</style>
 
-        </div>
-    </div>
+<!-- ============================================================== -->
+<!-- THE 2-COLUMN SPLIT FEED                                        -->
+<!-- ============================================================== -->
+<div class="feed-layout">
 
-   
-    <div class="widget-column">
+    <div class="feed-main" style="min-width: 0;">
 
-        <div class="glass-card">
-            <h3 style="font-size: 16px; margin-bottom: 15px;">Trending Projects <span style="float:right; color: var(--text-muted);">...</span></h3>
-            <p style="color: var(--text-muted); font-size: 14px;">Coming soon</p>
-        </div>
+        <!-- 1. Live Feed Header Text (With the powerful new Active Row!) -->
+        <div class="mb-4 mt-3">
+            <h3 class="mb-1 text-white" style="font-weight: bold;">Live Feed</h3>
+            <p class="text-muted" style="font-size: 14px; margin-bottom: 0;">What devs are building right now</p>
 
-        <div class="glass-card">
-            <h3 style="font-size: 16px; margin-bottom: 15px;">Active Developers <span style="float:right; color: var(--text-muted);">...</span></h3>
-            <p style="color: var(--text-muted); font-size: 14px;">Coming soon</p>
-        </div>
-
-        <div class="glass-card">
-            <h3 style="font-size: 16px; margin-bottom: 15px;">Quick Stats <span style="float:right; color: var(--text-muted);">...</span></h3>
-            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px;">Projects: <strong>0</strong></p>
-                <p style="color: var(--text-muted); font-size: 14px; margin:0;">Completed: <strong>0</strong></p>
+            <!-- JS dynamically injects the active pills here! -->
+            <div id="active-filters-container" class="align-items-center gap-2 mt-4" style="display: none;">
+                <span style="color: #6a7c6a; font-size: 13px;">Active:</span>
+                <div id="active-filters-list" class="d-flex flex-wrap gap-2"></div>
             </div>
-            <div class="celebration-feed">
-                @if (Model.Celebrations != null && Model.Celebrations.Any())
-                {
-                    foreach (var win in Model.Celebrations)
-                    {
-                        <div class="celebration-item flex-row">
-                            <div class="avatar bg-primary">@win.DeveloperInitials</div>
+        </div>
 
-                            <div class="celebration-content">
-                                <a asp-page="/Profile" asp-route-username="@win.DeveloperName" style="color: inherit; text-decoration: none;"><strong>@win.DeveloperName</strong></a>
-                                <span class="action-text">@win.ActionText</span>
-                                <p class="project-title">@win.ProjectTitle</p>
+        <!-- 2. THE BIG FILTER PANEL -->
+        <div id="filter-panel" class="mb-5" style="display: none; border: 1px solid #144021; padding: 24px; border-radius: 12px; background-color: #030804; width: 100%;">
 
-                              
-                                @if (!string.IsNullOrEmpty(win.ImagePath))
-                                {
-                                    <img src="@win.ImagePath" alt="Win Image" style="max-width: 100%; border-radius: 8px; margin-top: 8px;" />
-                                }
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="text-white mb-0" style="font-weight: bold; font-size: 15px;">Filter feed</h5>
+                <span id="close-filter-btn" style="color: #6a7c6a; cursor: pointer; font-size: 16px; font-weight: bold;">&#10005;</span>
+            </div>
 
-                                
-                                <small class="time-ago">@win.CreatedAt.ToString("MMM dd")</small>
+            <div class="mb-4">
+                <div style="font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #5a665a; margin-bottom: 12px;">STAGE</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="filter-tag">Ideating</button>
+                    <button class="filter-tag">Building</button>
+                    <button class="filter-tag">Launching</button>
+                    <button class="filter-tag">Completed</button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div style="font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #5a665a; margin-bottom: 12px;">SUPPORT NEEDED</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="filter-tag">LLM engineer</button>
+                    <button class="filter-tag">Designer</button>
+                    <button class="filter-tag">Backend dev</button>
+                    <button class="filter-tag">Marketing</button>
+                    <button class="filter-tag">Any role</button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div style="font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #5a665a; margin-bottom: 12px;">TOPIC / TECH</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="filter-tag">AI / LLM</button>
+                    <button class="filter-tag">SaaS</button>
+                    <button class="filter-tag">Developer tools</button>
+                    <button class="filter-tag">Health tech</button>
+                    <button class="filter-tag">Fintech</button>
+                    <button class="filter-tag">Open source</button>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div style="font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #5a665a; margin-bottom: 12px;">SORT BY</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="filter-tag">Latest</button>
+                    <button class="filter-tag">Most active</button>
+                    <button class="filter-tag">Most collab requests</button>
+                    <button class="filter-tag">Near completion</button>
+                </div>
+            </div>
+
+            <hr style="border-color: #143521; margin: 30px 0; border-width: 1px; opacity: 1;">
+
+            <div class="d-flex gap-3">
+                <button id="clear-filters-btn" class="btn" style="color: #6a7c6a; border: 1px solid #1c3d26; padding: 10px 32px; font-size: 13px; border-radius: 8px; font-weight: 500; background-color: transparent; transition: all 0.2s;">Clear all</button>
+                <button id="apply-filters-btn" class="btn flex-grow-1" style="font-weight: 600; font-size: 14px; padding: 10px; border-radius: 8px; border: none; background-color: #1f8a3c; color: white; transition: all 0.2s;">Apply filters</button>
+            </div>
+        </div>
+
+        <!-- 3. The Feed Posts loop -->
+        @foreach (var project in Model.LiveFeedProjects)
+        {
+            <div class="dashboard-card mb-4" style="border: 1px solid #14532d; padding: 24px; border-radius: 12px; background-color: #050a06; overflow: hidden; word-wrap: break-word;">
+
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div class="d-flex gap-3 align-items-start">
+
+                        <div class="wall-avatar mt-1" style="width: 42px; height: 42px; font-size: 16px; background-color: #1a3320; color: var(--brand-green); border: 1px solid #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            @(string.IsNullOrEmpty(project.DeveloperId) ? "AK" : project.DeveloperId.Substring(0, Math.Min(2, project.DeveloperId.Length)).ToUpper())
+                        </div>
+
+                        <div class="d-flex flex-column">
+                            <div style="color: white; font-weight: bold; font-size: 15px;">
+                                @(string.IsNullOrEmpty(project.DeveloperId) ? "Alex Kim" : project.DeveloperId)
+                                <span class="text-muted" style="font-weight: normal; font-size: 13px;">— you</span>
+                            </div>
+                            <div class="text-muted" style="font-size: 12px; margin-bottom: 8px;">2 min ago</div>
+
+                            <div>
+                                <span style="display: inline-block; border: 1px solid #165228; color: #22c55e; padding: 4px 12px; border-radius: 20px; font-size: 11px; background-color: rgba(34, 197, 94, 0.05);">@(string.IsNullOrEmpty(project.Stage) ? "Actively Building" : project.Stage)</span>
                             </div>
                         </div>
-                    }
-                }
-                else
-                {
-                    <p style="color: #8B949E; text-align: center; margin-top: 20px;">No wins yet. Be the first to post!</p>
-                }
-            </div>
 
-
-                    <div class="celebration-item flex-row">
-                        <div class="avatar bg-primary">MJ</div>
-                        <div class="celebration-content">
-                            <a asp-page="/Profile" asp-route-username="Mark J." style="color: inherit; text-decoration: none;"><strong>Mark J.</strong></a>
-                            <span class="action-text">squashed a bug</span>
-                            <p class="project-title">Resolved DB Timeout Issue</p>
-                            <small class="time-ago">5 hours ago</small>
-                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
+                <h5 style="color: #22c55e; font-size: 16px; margin-bottom: 16px; font-weight: 500;">
+                    @project.Title
+                </h5>
+
+                <div style="font-size: 14px; color: #ccc; margin-bottom: 24px; padding-left: 4px;">
+                    <span style="color: #22c55e; font-size: 14px; margin-right: 8px;">●</span>
+                    Milestone: Auth system shipped — JWT + refresh tokens done!
+                </div>
+
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between text-muted" style="font-size: 12px; margin-bottom: 8px;">
+                        <span>Overall progress</span>
+                        <span>42%</span>
+                    </div>
+                    <div style="height: 4px; background-color: #222; border-radius: 2px; width: 100%;">
+                        <div style="width: 42%; height: 100%; background-color: #22c55e; border-radius: 2px;"></div>
+                    </div>
+                </div>
+
+                <p style="color: #ccc; font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
+                    @project.Description
+                </p>
+
+                <div class="d-flex gap-4">
+                    <div style="cursor: pointer; color: #999; font-size: 13px; display: flex; align-items: center;">
+                        <span style="color: white; margin-right: 8px; font-size: 16px;">💬</span> 4 comments
+                    </div>
+                    <div style="cursor: pointer; color: #999; font-size: 13px; display: flex; align-items: center;">
+                        <span style="margin-right: 8px; font-size: 16px;">👋</span> Request collab
+                    </div>
+                </div>
+
+            </div>
+        }
 
     </div>
 
+    <!-- RIGHT COLUMN -->
+    <div class="feed-widgets" style="min-width: 0;">
+
+        <!-- Static Buttons -->
+        <div class="d-flex justify-content-start gap-3 mb-4 mt-3">
+            <button id="toggle-filter-btn" class="custom-filter-btn d-flex align-items-center gap-2">
+                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1.5H13M3 6H11M5.5 10.5H8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                Filter
+                <!-- The badge that wakes up when clicked! -->
+                <span id="filter-badge" style="background-color: #22c55e; color: #000; border-radius: 50%; width: 22px; height: 22px; font-size: 11.5px; font-weight: bold; display: none; align-items: center; justify-content: center; line-height: 1;">0</span>
+            </button>
+            <a href="/CreateProject" class="custom-new-btn">+ New Entry</a>
+        </div>
+
+        <!-- Widget 1: Trending Topics -->
+        <div class="dashboard-card mb-0" style="padding: 24px; border-radius: 12px; background-color: #050a06; border: 1px solid #14532d;">
+            <h6 class="text-muted mb-4" style="font-size: 11px; font-weight: 600; letter-spacing: 1px;">TRENDING TOPICS</h6>
+
+            <div class="d-flex justify-content-between mb-3" style="font-size: 13px;">
+                <div class="text-white"><span style="color: #3b82f6; margin-right: 8px;">●</span> AI / LLM</div>
+                <div class="text-muted">24 projects</div>
+            </div>
+            <div class="d-flex justify-content-between mb-3" style="font-size: 13px;">
+                <div class="text-white"><span style="color: #22c55e; margin-right: 8px;">●</span> SaaS</div>
+                <div class="text-muted">18 projects</div>
+            </div>
+            <div class="d-flex justify-content-between mb-3" style="font-size: 13px;">
+                <div class="text-white"><span style="color: #eab308; margin-right: 8px;">●</span> Developer tools</div>
+                <div class="text-muted">15 projects</div>
+            </div>
+            <div class="d-flex justify-content-between mb-3" style="font-size: 13px;">
+                <div class="text-white"><span style="color: #06b6d4; margin-right: 8px;">●</span> Health tech</div>
+                <div class="text-muted">9 projects</div>
+            </div>
+            <div class="d-flex justify-content-between" style="font-size: 13px;">
+                <div class="text-white"><span style="color: #f97316; margin-right: 8px;">●</span> Fintech</div>
+                <div class="text-muted">7 projects</div>
+            </div>
+        </div>
+
+        <!-- Widget 2: Online Now -->
+        <div class="dashboard-card mt-4 mb-0" style="padding: 24px; border-radius: 12px; background-color: #050a06; border: 1px solid #14532d;">
+            <h6 class="text-muted mb-4" style="font-size: 11px; font-weight: 600; letter-spacing: 1px;">ONLINE NOW</h6>
+
+            <div class="d-flex align-items-center mb-3 text-white" style="font-size: 13px;">
+                <span style="color: #22c55e; margin-right: 8px;">●</span> Sara Reeves
+            </div>
+            <div class="d-flex align-items-center mb-3 text-white" style="font-size: 13px;">
+                <span style="color: #22c55e; margin-right: 8px;">●</span> Marcus Jones
+            </div>
+            <div class="d-flex align-items-center mb-3 text-white" style="font-size: 13px;">
+                <span style="color: #22c55e; margin-right: 8px;">●</span> Priya Nair
+            </div>
+            <div class="d-flex align-items-center mb-3 text-white" style="font-size: 13px;">
+                <span style="color: #22c55e; margin-right: 8px;">●</span> Tom Li
+            </div>
+            <div class="d-flex align-items-center text-white" style="font-size: 13px;">
+                <span style="color: #22c55e; margin-right: 8px;">●</span> Dana Ortiz
+            </div>
+        </div>
+
+        <!-- Widget 3: Seeking Collaborators -->
+        <div class="dashboard-card mt-4 mb-0" style="padding: 24px; border-radius: 12px; background-color: #050a06; border: 1px solid #14532d;">
+            <h6 class="text-muted mb-4" style="font-size: 11px; font-weight: 600; letter-spacing: 1px;">SEEKING COLLABORATORS</h6>
+
+            <div class="mb-3">
+                <div class="text-white" style="font-weight: bold; font-size: 14px;">DevFlow</div>
+                <div class="text-muted" style="font-size: 12px;">Needs: LLM engineer</div>
+            </div>
+            <div class="mb-3">
+                <div class="text-white" style="font-weight: bold; font-size: 14px;">HealthLog</div>
+                <div class="text-muted" style="font-size: 12px;">Needs: UI/UX designer</div>
+            </div>
+            <div>
+                <div class="text-white" style="font-weight: bold; font-size: 14px;">CodeBuddy</div>
+                <div class="text-muted" style="font-size: 12px;">Needs: Backend dev</div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<!-- ============================================================== -->
+<!-- ALL FRONTEND LOGIC (Interactive Filter Core Engine)            -->
+<!-- ============================================================== -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.getElementById("toggle-filter-btn");
+        const closeBtn = document.getElementById("close-filter-btn");
+        const filterPanel = document.getElementById("filter-panel");
+        const filterTags = document.querySelectorAll(".filter-tag");
+        const filterBadge = document.getElementById("filter-badge");
+
+        const clearBtn = document.getElementById("clear-filters-btn");
+        const applyBtn = document.getElementById("apply-filters-btn");
+
+        const activeContainer = document.getElementById("active-filters-container");
+        const activeList = document.getElementById("active-filters-list");
+
+        // 1. Toggle Panel Visibility
+        if (toggleBtn && filterPanel) {
+            toggleBtn.addEventListener("click", function () {
+                filterPanel.style.display = filterPanel.style.display === "none" ? "block" : "none";
+            });
+        }
+
+        // 2. Hide Panel cleanly with "X" icon
+        if (closeBtn && filterPanel) {
+            closeBtn.addEventListener("click", function () {
+                filterPanel.style.display = "none";
+            });
+        }
+
+        // 3. Keep the green numerical badge 100% synced
+        function updateBadge() {
+            if (!filterBadge) return;
+            const activeCount = document.querySelectorAll("#filter-panel .filter-tag.active").length;
+            if (activeCount > 0) {
+                filterBadge.textContent = activeCount;
+                filterBadge.style.display = "flex";
+            } else {
+                filterBadge.style.display = "none";
+            }
+        }
+
+        // 4. Builds those slick removable "Active:" tags when Apply is hit
+        function buildActiveTagsRow() {
+            if (!activeList || !activeContainer) return;
+
+            // clear the slate
+            activeList.innerHTML = "";
+            const activeTags = document.querySelectorAll("#filter-panel .filter-tag.active");
+
+            if (activeTags.length === 0) {
+                // Instantly hide the active row if 0
+                activeContainer.style.display = "none";
+                return;
+            }
+
+            // Power up the active row!
+            activeContainer.style.display = "flex";
+
+            activeTags.forEach(tag => {
+                const tagText = tag.textContent.trim();
+
+                const pill = document.createElement("span");
+                pill.className = "active-display-pill";
+                pill.innerHTML = `${tagText} <span class="remove-pill">&times;</span>`;
+
+                // Add robust cleanup logic to the 'x'
+                pill.querySelector(".remove-pill").addEventListener("click", function () {
+                    // Strips green active class from the panel button
+                    tag.classList.remove("active");
+                    // Rewires visuals instantly!
+                    updateBadge();
+                    buildActiveTagsRow();
+                });
+
+                activeList.appendChild(pill);
+            });
+        }
+
+        // 5. Clicking individual tags turns them green + modifies badge
+        filterTags.forEach(tag => {
+            tag.addEventListener("click", function () {
+                this.classList.toggle("active");
+                updateBadge();
+            });
+        });
+
+        // 6. Generic "Clear all" strips tags safely
+        if (clearBtn) {
+            clearBtn.addEventListener("click", function () {
+                filterTags.forEach(tag => tag.classList.remove("active"));
+                updateBadge();
+                buildActiveTagsRow();
+            });
+        }
+
+        // 7. Clicking "Apply Filters" completes the circle!
+        if (applyBtn && filterPanel) {
+            applyBtn.addEventListener("click", function () {
+                // Tucks away panel
+                filterPanel.style.display = "none";
+                // Renders out visuals
+                buildActiveTagsRow();
+            });
+        }
+    });
+</script>
