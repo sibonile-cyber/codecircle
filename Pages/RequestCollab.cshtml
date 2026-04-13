@@ -1,0 +1,215 @@
+@page
+@model CodeCircle.Pages.RequestCollabModel
+@{
+    ViewData["Title"] = "Request Collaboration";
+}
+
+<style>
+    body {
+        background-color: #030804;
+    }
+    .collab-page-container {
+        max-width: 550px;
+        margin: 60px auto;
+        background-color: #050a06;
+        border: 1px solid #1c3d26;
+        border-radius: 12px;
+        padding: 32px;
+        color: white;
+    }
+    
+    .project-radio-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px;
+        border: 1px solid #1c3d26;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        background-color: transparent;
+        transition: all 0.2s;
+    }
+
+    .project-radio-card.active {
+        border-color: #22c55e;
+        background-color: rgba(34, 197, 94, 0.05);
+    }
+
+    .custom-radio {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid #1c3d26;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .project-radio-card.active .custom-radio {
+        border-color: #22c55e;
+    }
+
+    .project-radio-card.active .custom-radio::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #22c55e;
+    }
+
+    .project-title {
+        font-weight: 600;
+        font-size: 14px;
+        margin: 0 0 4px;
+        color: white;
+    }
+
+    .project-meta {
+        color: #6a7c6a;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .modal-label {
+        display: block;
+        color: #6a7c6a;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    .dark-select {
+        width: 100%;
+        background-color: #030804;
+        border: 1px solid #1c3d26;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+    }
+    
+    .filter-tag {
+        background-color: transparent;
+        border: 1px solid #1c3d26;
+        color: #4b8c5a;
+        padding: 6px 18px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .filter-tag:hover {
+        border-color: #2c5a38;
+        color: #5da86e;
+    }
+    .filter-tag.active {
+        border-color: #22c55e;
+        color: #22c55e;
+        background-color: rgba(34, 197, 94, 0.05);
+    }
+    
+    .btn-submit {
+        background: #1a7a2e;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 500;
+        transition: background-color 0.2s;
+    }
+    .btn-submit:hover {
+        background: #1f8a3c;
+    }
+</style>
+
+<div class="container pb-5">
+    <div class="collab-page-container">
+        
+        <div style="margin-bottom: 32px;">
+            <h3 style="font-size: 22px; font-weight: 700; margin: 0 0 8px;">Request collaboration</h3>
+            <p style="color: #6a7c6a; font-size: 14px; margin: 0;">Sending to Sara Reeves • @@sarareeves</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="modal-label">Which of your projects do you want to collab on?</label>
+            
+            <div class="project-radio-card active" onclick="selectCollabProject(this)">
+                <div class="custom-radio"></div>
+                <div>
+                    <p class="project-title">DevFlow</p>
+                    <p class="project-meta">Building • 42% progress • Needs LLM engineer</p>
+                </div>
+            </div>
+
+            <div class="project-radio-card" onclick="selectCollabProject(this)">
+                <div class="custom-radio"></div>
+                <div>
+                    <p class="project-title">CLI Toolkit</p>
+                    <p class="project-meta">Completed • Open source</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="modal-label">What role are you offering / requesting?</label>
+            <select class="dark-select">
+                <option>LLM / AI engineer</option>
+                <option>Frontend developer</option>
+                <option>Backend developer</option>
+                <option>UI/UX Designer</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="modal-label">Skills you bring to the table</label>
+            <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="filter-tag active" onclick="this.classList.toggle('active')">React</button>
+                <button type="button" class="filter-tag active" onclick="this.classList.toggle('active')">TypeScript</button>
+                <button type="button" class="filter-tag active" onclick="this.classList.toggle('active')">Node.js</button>
+                <button type="button" class="filter-tag" onclick="this.classList.toggle('active')">Python</button>
+                <button type="button" class="filter-tag" onclick="this.classList.toggle('active')">LLM APIs</button>
+                <button type="button" class="filter-tag" onclick="this.classList.toggle('active')">PostgreSQL</button>
+                <button type="button" class="filter-tag" onclick="this.classList.toggle('active')">Docker</button>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="modal-label">Availability</label>
+            <select class="dark-select">
+                <option>Part-time • ~5 hrs/week</option>
+                <option>Full-time</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="modal-label d-flex justify-content-between">
+                <span>Personal message</span>
+                <span style="font-size:11px; color:#4b594b;">helps your request stand out</span>
+            </label>
+            <textarea style="width: 100%; background-color: #030804; border: 1px solid #164525; color: #4b8c5a; border-radius: 8px; padding: 12px; font-size: 13px; font-family: monospace;" rows="4">Hi Sara! I've been following HealthLog since you posted it. I'm an AI engineer and I think I can really help with the data insights layer — I've built similar pipelines for two other health apps. Would love to chat!</textarea>
+        </div>
+
+        <div class="d-flex gap-3" style="border-top: 1px solid #144021; padding-top: 24px; margin-top: 32px;">
+            <a href="/Index" style="background: transparent; border: 1px solid #1c3d26; color: #6a7c6a; width: 30%; border-radius: 8px; font-weight: 500; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.2s;" onmouseover="this.style.background='#144021'" onmouseout="this.style.background='transparent'">Cancel</a>
+            <button type="button" class="btn-submit" style="width: 70%;" onclick="alert('Collab Request Sent!'); window.location.href='/Index';">Send collab request 👋</button>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function selectCollabProject(element) {
+            document.querySelectorAll('.project-radio-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+    </script>
+}

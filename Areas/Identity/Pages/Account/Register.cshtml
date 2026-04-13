@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-5 pb-5">
-    <!-- Exactly 650px wide to match the rest of the app -->
+    
     <div style="max-width: 650px; margin: 0 auto;">
         <div class="card p-5 shadow-lg" style="background-color: #1A1E23; border: 1px solid #30363D; border-radius: 12px; border-bottom: 4px solid #58A6FF;">
             <section>
@@ -20,19 +20,7 @@
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                     <!-- Password Field -->
-<div class="form-group mb-4">
-    <label asp-for="Input.Password" class="form-label" style="color: #8B949E; font-weight: 500; margin-bottom: 8px; display: block;">Password</label>
-    <input asp-for="Input.Password" class="form-control" style="background-color: #0D1117; color: white; border: 1px solid #30363D; border-radius: 6px; padding: 12px; width: 100%;" autocomplete="new-password" aria-required="true" placeholder="••••••••" />
-    
-    <!-- ADD THIS HINT TEXT RIGHT HERE! -->
-    <div class="mt-2">
-        <small style="color: #8B949E; font-size: 0.85rem;">
-            * Password must be at least 6 characters and contain an uppercase letter, a number, and a special character (e.g. !@@#$).
-        </small>
-    </div>
-
-    <span asp-validation-for="Input.Password" class="text-danger"></span>
-</div>
+                  <div class="form-group mb-4">
 
                     <div class="form-group mb-4">
                         <label asp-for="Input.Password" class="form-label" style="color: #8B949E; font-weight: 500; margin-bottom: 8px; display: block;">Password</label>
